@@ -1,0 +1,17 @@
+{
+  "name": "tsuri-biyori",
+  "version": "1.0.0",
+  "private": true,
+  "description": "日本語で遊べる、小さなブラウザ魚釣りゲーム",
+  "scripts": {
+    "start": "python3 -m http.server 8000 --bind 0.0.0.0",
+    "test": "node --test tests/game-core.test.cjs",
+    "test:browser": "node --test tests/browser.test.cjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}

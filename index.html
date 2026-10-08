@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#28674c">
+    <meta name="description" content="ボタンひとつで、のんびり魚釣り。6種類の魚を集めて、今日の釣果を楽しもう。">
+    <title>釣り日和 — のんびり魚釣りゲーム</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css">
+    <script src="game-core.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <svg class="svg-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <symbol id="fish-icon" viewBox="0 0 64 48">
+          <path d="M44 23 60 10v28L44 26" fill="currentColor"/>
+          <path d="m23 14 8-9 8 11m-15 17 7 10 7-10" fill="currentColor" opacity=".65"/>
+          <ellipse cx="27" cy="24" rx="23" ry="14" fill="currentColor"/>
+          <path d="M30 15q-8 9 0 18" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="2"/>
+          <circle cx="13" cy="21" r="2.3" fill="#233d36"/>
+          <path d="M6 27h4" stroke="#233d36" stroke-width="1.5" stroke-linecap="round"/>
+        </symbol>
+        <symbol id="hook-icon" viewBox="0 0 24 24">
+          <path d="M13 3v12a5 5 0 0 1-10 0v-4l4 3M10 3h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </symbol>
+        <symbol id="reset-icon" viewBox="0 0 24 24">
+          <path d="M4 10a8 8 0 1 1 1 8M4 4v6h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </symbol>
+      </defs>
+    </svg>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="./index.html" aria-label="釣り日和 ホーム">
+          <span class="brand-icon"><svg aria-hidden="true"><use href="#fish-icon"/></svg></span>
+          <span>釣り日和<span class="brand-subtitle">小さな、海の休憩時間。</span></span>
+        </a>
+        <span class="header-note"><span class="status-dot"></span> いつでも、のんびり。</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">気ままに、ひと釣り。</p>
+          <h1 id="page-title">今日も、いい一匹に出会おう。</h1>
+          <p class="intro-description">釣り糸を垂らして、ちょっとひと息。何が釣れるかはお楽しみ。</p>
+        </div>
+        <div class="day-tag"><span aria-hidden="true">☀</span> 絶好の釣り日和</div>
+      </section>
+
+      <div class="game-layout">
+        <section class="fishing-card" aria-label="魚釣り">
+          <div class="scene" id="scene">
+            <div class="scene-toolbar">
+              <span class="location"><span aria-hidden="true">⌖</span> ひだまりの波止場</span>
+              <span class="scene-state" id="scene-state"><span class="status-dot"></span> 釣りの準備OK</span>
+            </div>
+            <svg class="landscape" viewBox="0 0 800 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="穏やかな海と、釣り竿のある小さな木の波止場">
+              <defs>
+                <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#e5f2ea"/><stop offset="1" stop-color="#f4f6d8"/></linearGradient>
+                <linearGradient id="water" x2="0" y2="1"><stop stop-color="#9accc5"/><stop offset="1" stop-color="#71b4ad"/></linearGradient>
+              </defs>
+              <path fill="url(#sky)" d="M0 0h800v460H0z"/>
+              <circle cx="618" cy="106" r="39" fill="#faf2ba"/>
+              <circle cx="618" cy="106" r="51" fill="#faf2ba" opacity=".23"/>
+              <g fill="#fff" opacity=".75">
+                <path d="M91 102c2-13 17-20 28-12 12-16 38-9 38 8 15-1 22 7 22 13H80c0-5 5-9 11-9Z"/>
+                <path d="M418 59c1-9 12-13 20-8 9-12 26-7 28 5 10 0 15 5 15 9h-71c0-3 3-6 8-6Z"/>
+              </g>
+              <path d="m0 205 82-45 58 38 59-63 76 54 82-34 96 69H0Z" fill="#b9cfbd"/>
+              <path d="m471 224 80-56 59 31 88-63 102 75v31H471Z" fill="#c2d6c2"/>
+              <path d="m0 214 79-17 87 29 96-34 88 41 70-17 78 27H0Z" fill="#91b6a5"/>
+              <path d="M0 237q105-8 198 0t190 0 213 0 199 0v223H0Z" fill="url(#water)"/>
+              <path d="M0 241q200-6 401 0t399 0" fill="none" stroke="#ecf1d8" stroke-width="3" opacity=".7"/>
+              <g class="water-lines" fill="none" stroke="#d4e7d7" stroke-width="2" stroke-linecap="round" opacity=".65">
+                <path d="M396 285h49m117-22h39m-355 47h39m325 14h43m-62 70h39m102-62h57m-298 85h44m-284-12h28m-104-59h47m-159-71h41m470 144h22"/>
+                <path d="M548 295h16m-56 49h23m171-49h30m-411 63h18m-85 72h48m112-110h20"/>
+              </g>
+              <g fill="none" stroke="#667f71" stroke-width="2.2" stroke-linecap="round">
+                <path d="M512 133q6-7 12 0 6-7 12 0m-71 28q5-6 10 0 5-6 10 0"/>
+              </g>
+              <path d="M0 293q36-26 78-13l45 25-8 155H0Z" fill="#6d9d76"/>
+              <path d="M0 294q45-12 79 6l45 26-18 27L0 343Z" fill="#a5b77b"/>
+              <g stroke="#63815b" stroke-width="3" fill="none" stroke-linecap="round">
+                <path d="m14 307 1-35m0 35 13-25m8 37-3-29m49 40 3-25m0 25 10-17"/>
+              </g>
+              <g>
+                <path d="m84 367 204-8 34 17-208 11Z" fill="#62928a" opacity=".35"/>
+                <path d="M87 319h13v79H87zm154-5h13v65h-13z" fill="#7d7160"/>
+                <path d="m69 311 207-7 28 23-211 9Z" fill="#c49d72"/>
+                <path d="m93 336 211-9v10L93 346Z" fill="#9d7957"/>
+                <g stroke="#a37e59" stroke-width="2"><path d="m99 310 27 23m7-24 27 23m7-24 27 23m7-24 27 23m7-24 27 23"/></g>
+                <path d="M163 310v-29h26v28" fill="#e9dcc0"/>
+                <ellipse cx="176" cy="281" rx="13" ry="4" fill="#f7eddb"/>
+                <path d="M169 286v17m8-17v17" stroke="#caba9d" stroke-width="2"/>
+                <path d="M229 307q21-59 57-128" stroke="#465b47" stroke-width="5" stroke-linecap="round" fill="none"/>
+                <path d="M286 179q39 7 66 92" stroke="#f7f1d9" stroke-width="1.8" fill="none"/>
+                <path d="m229 307 7-17" stroke="#ab8259" stroke-width="8" stroke-linecap="round"/>
+                <circle cx="241" cy="284" r="6" fill="#586956"/>
+              </g>
+              <g id="bobber" class="bobber">
+                <ellipse class="bobber-ripple" cx="352" cy="283" rx="24" ry="5" stroke="#e5f2d9" stroke-width="1.5" fill="none"/>
+                <ellipse cx="352" cy="283" rx="14" ry="3" fill="#eff6e1" opacity=".4"/>
+                <path d="M348 274a4 4 0 0 1 8 0v5h-8Z" fill="#d97258"/>
+                <path d="M348 279h8a4 4 0 0 1-8 0" fill="#fff8e6"/>
+                <path d="M352 267v3" stroke="#7d6953" stroke-width="2"/>
+              </g>
+              <g opacity=".2" fill="#367c76"><path d="m627 370 17-7v14z"/><ellipse cx="612" cy="370" rx="17" ry="7"/><path d="m457 409 10-5v10z"/><ellipse cx="446" cy="409" rx="12" ry="5"/></g>
+            </svg>
+            <div class="catch-pop" id="catch-pop" hidden aria-hidden="true"><svg><use href="#fish-icon"/></svg><span id="pop-name"></span></div>
+            <p class="scene-caption" id="scene-caption">ゆっくり待つのも、釣りの楽しみ。</p>
+          </div>
+          <div class="fishing-controls">
+            <div class="message-area" aria-live="polite" aria-atomic="true">
+              <p class="result-title" id="result-title">さあ、釣り糸を垂らしてみよう。</p>
+              <p class="result-description" id="result-description">ボタンを押すと、少し待って魚が釣れます。</p>
+            </div>
+            <div class="button-row">
+              <button class="fish-button" id="fish-button" type="button"><svg aria-hidden="true"><use href="#hook-icon"/></svg><span id="fish-button-label">釣りをはじめる</span><span class="button-arrow" aria-hidden="true">→</span></button>
+              <button class="reset-button" id="reset-button" type="button"><svg aria-hidden="true"><use href="#reset-icon"/></svg>リセット</button>
+            </div>
+          </div>
+        </section>
+
+        <aside class="catch-card" aria-labelledby="catch-heading">
+          <div class="card-heading"><h2 id="catch-heading">本日の釣果</h2><span class="count-badge" id="catch-count">0匹</span></div>
+          <div class="score-box"><span>合計得点</span><p><strong id="total-score">0</strong><span>pt</span></p><span class="score-note">一匹ずつ、楽しみを積み重ねよう。</span></div>
+          <div class="history-heading"><span>釣れた魚</span><span>新しい順</span></div>
+          <div class="empty-catch" id="empty-catch"><div class="empty-fish"><svg aria-hidden="true"><use href="#fish-icon"/></svg><span class="bubble bubble-one"></span><span class="bubble bubble-two"></span></div><p>まだ釣果がありません</p><span>最初の一匹を釣ってみよう。</span></div>
+          <ol class="catch-list" id="catch-list" aria-label="釣果履歴" hidden></ol>
+          <p class="catch-footnote">どんな魚が釣れるかは、海まかせ。</p>
+        </aside>
+      </div>
+
+      <section class="collection" aria-labelledby="collection-heading">
+        <div class="collection-heading"><div><h2 id="collection-heading">この海のさかな</h2><p>全6種類。ちょっと珍しい魚にも出会えるかも。</p></div><span class="collection-progress" id="collection-progress">発見 <strong>0 / 6</strong> 種</span></div>
+        <ul class="fish-catalog" id="fish-catalog"></ul>
+      </section>
+      <p class="play-note"><svg aria-hidden="true"><use href="#hook-icon"/></svg> 釣りをはじめる → 少し待つ → 釣果をチェック。何度でも、気軽にどうぞ。</p>
+    </main>
+    <footer><span>釣り日和</span><span>あなたの毎日に、ちいさな「釣れた！」を。</span></footer>
+  </body>
+</html>
