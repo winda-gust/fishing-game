@@ -34,26 +34,54 @@ h1 { margin: 0; font-size: clamp(23px, 3vw, 32px); letter-spacing: .025em; line-
 .day-tag span { font-size: 18px; vertical-align: -1px; margin-right: 6px; }
 .game-layout { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 24px; }
 .fishing-card, .catch-card { background: #fff; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; box-shadow: 0 4px 16px #233f3004; }
-.scene { position: relative; background: #88beb5; overflow: hidden; }
+.scene { position: relative; background: #88beb5; overflow: hidden; height: clamp(170px, 25vw, 300px); }
 .scene-toolbar { position: absolute; z-index: 2; inset: 20px 22px auto; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .location { font-size: 11px; color: #536d5e; background: #ffffffe6; border-radius: 20px; padding: 7px 12px; }
 .location span { font-size: 15px; margin-right: 3px; }
 .scene-state { display: flex; align-items: center; gap: 6px; color: #5a7967; font-size: 10px; }
-.landscape { display: block; width: 100%; height: auto; }
+.landscape { display: block; width: 100%; height: 100%; }
 .scene-caption { position: absolute; bottom: 17px; margin: 0; width: 100%; text-align: center; font-size: 11px; color: #254f4b; letter-spacing: .08em; }
 .bobber { transform-origin: 352px 280px; animation: float 3s ease-in-out infinite; }
 .water-lines { animation: water 6s ease-in-out infinite; }
-.scene.is-fishing .bobber { animation: bite .55s ease-in-out infinite; }
-.scene.is-fishing .bobber-ripple { stroke-width: 3; }
-.scene.is-fishing .scene-state .status-dot { animation: pulse 1s infinite; }
+.scene[data-phase="nibbling"] .bobber { animation: nibble .4s ease-in-out infinite; }
+.scene[data-phase="biting"] .bobber { animation: submerge .3s ease-in-out infinite; }
+.scene[data-phase="biting"] .bobber-ripple { stroke-width: 4; }
+.scene[data-phase="biting"] .scene-state { font-weight: 700; color: #7e342c; }
+.scene[data-phase="biting"] .scene-state .status-dot { background: #ab453b; animation: pulse .6s infinite; }
+.scene[data-phase="paused"] * { animation-play-state: paused !important; }
+.fighting-shadow { position: absolute; left: 57%; top: 66%; color: #2c7772; opacity: .55; }
+.fighting-shadow svg { width: 65px; height: 49px; transform: translate(-50%, -50%) scale(var(--shadow-scale, 1)); }
+.scene[data-fish-state="warning"] .fighting-shadow { animation: twitch .7s ease-in-out infinite; }
+.scene[data-fish-state="struggling"] .fighting-shadow { animation: struggle .35s ease-in-out infinite; }
 .fishing-controls { padding: 23px 26px 25px; }
-.message-area { min-height: 56px; margin-bottom: 17px; }
+.message-area { min-height: 62px; margin-bottom: 12px; }
 .result-title { margin: 0 0 4px; font-size: 15px; font-weight: 700; }
 .result-description { color: var(--muted); font-size: 12px; margin: 0; }
 .button-row { display: flex; gap: 12px; }
+.battle-panel { margin: 0 0 15px; padding: 13px 15px 0; background: #f4f7f0; border: 1px solid #e1e9da; border-radius: 10px; }
+.fish-feedback { min-height: 46px; display: flex; align-items: flex-start; justify-content: space-between; gap: 5px; }
+.fish-feedback p { margin: 0; font-size: 12px; line-height: 1.55; font-weight: 700; }
+.fish-feedback #fish-pull { display: block; color: #67765e; font-size: 10px; margin-top: 3px; }
+#fish-state[data-state="warning"] { color: #825d22; }
+#fish-state[data-state="struggling"] { color: #9b4035; }
+#bite-window { flex-shrink: 0; border: 1px solid #d5946e; background: #fff2de; color: #7e4225; border-radius: 6px; padding: 3px 6px; font-size: 10px; white-space: nowrap; }
+.gauge-heading { display: flex; justify-content: space-between; font-size: 10px; color: #516348; margin: 8px 0 4px; }
+.gauge-heading span:last-child { font-variant-numeric: tabular-nums; font-weight: 700; }
+.gauge-track { height: 10px; border-radius: 5px; background: #dfe7d9; overflow: hidden; }
+.gauge-track > span { display: block; width: 0; height: 100%; border-radius: inherit; }
+.catch-progress > span { background: #4d8b65; }
+.line-tension > span { background: #b19b53; }
+.line-tension.is-danger > span { background: #b44d3a; }
+.line-tension.is-overloaded { outline: 2px solid #b44d3a; outline-offset: 2px; }
+.battle-panel[data-active="false"] .gauge-track { opacity: .65; }
+.tension-alert { display: flex; justify-content: space-between; gap: 4px; min-height: 24px; padding-top: 5px; color: #a43e2f; font-size: 10px; font-weight: 700; }
+.pause-notice { margin: 0 0 12px; padding: 9px 12px; border-radius: 8px; background: #fff1d9; color: #7c591e; font-size: 11px; }
+.input-guide { margin: 10px 0 0; min-height: 33px; color: #61735b; font-size: 11px; line-height: 1.6; }
 .fish-button { background: var(--green); color: #fff; border: 1px solid var(--green); padding: 13px 19px; border-radius: 10px; min-height: 50px; display: flex; align-items: center; justify-content: center; gap: 10px; flex: 1; font-size: 13px; font-weight: 700; transition: background .15s, transform .15s; }
 .fish-button:hover:enabled { background: #1b533b; transform: translateY(-1px); }
 .fish-button:active:enabled { transform: translateY(1px); }
+.fish-button { touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.fish-button.is-held { background: #174b33; box-shadow: inset 0 2px 6px #092d2a40; }
 .fish-button:disabled { cursor: wait; background: #729783; border-color: #729783; }
 .fish-button svg, .reset-button svg { width: 20px; height: 20px; flex-shrink: 0; }
 .button-arrow { margin-left: auto; font-size: 20px; font-weight: 400; }
@@ -115,7 +143,10 @@ footer span:first-child { color: #788671; font-weight: 600; letter-spacing: .08e
 .catch-pop svg { width: 88px; height: 67px; filter: drop-shadow(0 3px 0 #fff8); transform: rotate(-15deg); }
 .catch-pop span { font-size: 11px; font-weight: 700; background: #fff9; border-radius: 20px; padding: 3px 12px; color: #3d604d; }
 @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(2px); } }
-@keyframes bite { 0%, 100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(6px) rotate(4deg); } }
+@keyframes nibble { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(4px) rotate(2deg); } }
+@keyframes submerge { 0%, 100% { transform: translateY(17px) rotate(-12deg); opacity: .5; } 50% { transform: translateY(23px) rotate(8deg); opacity: .25; } }
+@keyframes twitch { 0%, 100% { transform: translateX(0) rotate(0); } 50% { transform: translateX(3px) rotate(-6deg); } }
+@keyframes struggle { 0%, 100% { transform: translateX(-10px) rotate(-12deg); } 50% { transform: translateX(10px) rotate(12deg); } }
 @keyframes water { 0%, 100% { transform: translateX(0); opacity: .65; } 50% { transform: translateX(5px); opacity: .4; } }
 @keyframes pulse { 50% { opacity: .35; } }
 @keyframes catch-in { from { opacity: 0; margin-top: 25px; } to { opacity: 1; margin-top: 0; } }
@@ -151,9 +182,16 @@ footer span:first-child { color: #788671; font-weight: 600; letter-spacing: .08e
   .header-note { display: none; }
   h1 { font-size: 21px; }
   .fishing-controls { padding: 18px 15px; }
+  .battle-panel { padding-left: 10px; padding-right: 10px; }
+  .fish-feedback p { font-size: 11px; }
+  .input-guide { font-size: 10px; }
   .fish-button { padding: 12px; gap: 6px; font-size: 12px; }
   .reset-button { padding: 12px 10px; font-size: 11px; }
   .collection-heading p { font-size: 10px; }
   .collection-progress { font-size: 10px; }
 }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .scene[data-phase="nibbling"] .bobber { transform: translateY(4px); }
+  .scene[data-phase="biting"] .bobber { transform: translateY(20px); opacity: .4; }
+}

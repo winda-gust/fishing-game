@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#28674c">
-    <meta name="description" content="ボタンひとつで、のんびり魚釣り。6種類の魚を集めて、今日の釣果を楽しもう。">
+    <meta name="description" content="食いつきに合わせて、巻く・休むで魚釣り。魚の動きを見ながら6種類の釣果を楽しもう。">
     <title>釣り日和 — のんびり魚釣りゲーム</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="styles.css">
@@ -46,19 +46,19 @@
         <div>
           <p class="eyebrow">気ままに、ひと釣り。</p>
           <h1 id="page-title">今日も、いい一匹に出会おう。</h1>
-          <p class="intro-description">釣り糸を垂らして、ちょっとひと息。何が釣れるかはお楽しみ。</p>
+          <p class="intro-description">出会いは運、釣り上げるのはあなた次第。ウキと魚の動きを見てみよう。</p>
         </div>
         <div class="day-tag"><span aria-hidden="true">☀</span> 絶好の釣り日和</div>
       </section>
 
       <div class="game-layout">
         <section class="fishing-card" aria-label="魚釣り">
-          <div class="scene" id="scene">
+          <div class="scene" id="scene" data-phase="idle">
             <div class="scene-toolbar">
               <span class="location"><span aria-hidden="true">⌖</span> ひだまりの波止場</span>
               <span class="scene-state" id="scene-state"><span class="status-dot"></span> 釣りの準備OK</span>
             </div>
-            <svg class="landscape" viewBox="0 0 800 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="穏やかな海と、釣り竿のある小さな木の波止場">
+            <svg class="landscape" viewBox="0 0 800 460" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="穏やかな海と、釣り竿のある小さな木の波止場">
               <defs>
                 <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#e5f2ea"/><stop offset="1" stop-color="#f4f6d8"/></linearGradient>
                 <linearGradient id="water" x2="0" y2="1"><stop stop-color="#9accc5"/><stop offset="1" stop-color="#71b4ad"/></linearGradient>
@@ -101,7 +101,7 @@
                 <path d="m229 307 7-17" stroke="#ab8259" stroke-width="8" stroke-linecap="round"/>
                 <circle cx="241" cy="284" r="6" fill="#586956"/>
               </g>
-              <g id="bobber" class="bobber">
+              <g id="bobber" class="bobber" hidden>
                 <ellipse class="bobber-ripple" cx="352" cy="283" rx="24" ry="5" stroke="#e5f2d9" stroke-width="1.5" fill="none"/>
                 <ellipse cx="352" cy="283" rx="14" ry="3" fill="#eff6e1" opacity=".4"/>
                 <path d="M348 274a4 4 0 0 1 8 0v5h-8Z" fill="#d97258"/>
@@ -110,18 +110,32 @@
               </g>
               <g opacity=".2" fill="#367c76"><path d="m627 370 17-7v14z"/><ellipse cx="612" cy="370" rx="17" ry="7"/><path d="m457 409 10-5v10z"/><ellipse cx="446" cy="409" rx="12" ry="5"/></g>
             </svg>
+            <div class="fighting-shadow" id="fighting-shadow" hidden aria-hidden="true"><svg viewBox="0 0 64 48"><use href="#fish-icon"/></svg></div>
             <div class="catch-pop" id="catch-pop" hidden aria-hidden="true"><svg><use href="#fish-icon"/></svg><span id="pop-name"></span></div>
             <p class="scene-caption" id="scene-caption">ゆっくり待つのも、釣りの楽しみ。</p>
           </div>
           <div class="fishing-controls">
             <div class="message-area" aria-live="polite" aria-atomic="true">
-              <p class="result-title" id="result-title">さあ、釣り糸を垂らしてみよう。</p>
-              <p class="result-description" id="result-description">ボタンを押すと、少し待って魚が釣れます。</p>
+              <p class="result-title" id="result-title">まずは、海に投げてみよう。</p>
+              <p class="result-description" id="result-description">大きく沈んだら合わせる。その後は、長押しで巻く・離して休む。</p>
             </div>
+            <div class="battle-panel" id="battle-panel" data-active="false">
+              <div class="fish-feedback">
+                <div><p id="fish-state" data-state="">合わせた後は、巻く・休むで引き寄せよう。</p><span id="fish-pull">魚の名前は、釣り上げてからのお楽しみ。</span></div>
+                <span id="bite-window" hidden><span id="bite-countdown" aria-hidden="true"></span></span>
+              </div>
+              <div class="gauge-heading"><span id="progress-label">釣り上げゲージ</span><span id="progress-value">0%</span></div>
+              <div class="gauge-track catch-progress" id="catch-progress" role="progressbar" aria-labelledby="progress-label" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="progress-fill"></span></div>
+              <div class="gauge-heading"><span id="tension-label">糸の張りゲージ</span><span id="tension-value">0%</span></div>
+              <div class="gauge-track line-tension" id="line-tension" role="progressbar" aria-labelledby="tension-label" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="tension-fill"></span></div>
+              <div class="tension-alert"><span id="tension-warning" aria-live="assertive"></span><span id="tension-grace" aria-hidden="true"></span></div>
+            </div>
+            <p class="pause-notice" id="pause-notice" hidden>一時停止中。準備ができたら「準備して再開」を押してください。</p>
             <div class="button-row">
-              <button class="fish-button" id="fish-button" type="button"><svg aria-hidden="true"><use href="#hook-icon"/></svg><span id="fish-button-label">釣りをはじめる</span><span class="button-arrow" aria-hidden="true">→</span></button>
+              <button class="fish-button" id="fish-button" type="button"><svg aria-hidden="true"><use href="#hook-icon"/></svg><span id="fish-button-label">投げる</span><span class="button-arrow" aria-hidden="true">→</span></button>
               <button class="reset-button" id="reset-button" type="button"><svg aria-hidden="true"><use href="#reset-icon"/></svg>リセット</button>
             </div>
+            <p class="input-guide" id="input-guide">投げる → 大きく沈んだら押す → 長押しで巻く／離して休む</p>
           </div>
         </section>
 
@@ -139,7 +153,7 @@
         <div class="collection-heading"><div><h2 id="collection-heading">この海のさかな</h2><p>全6種類。ちょっと珍しい魚にも出会えるかも。</p></div><span class="collection-progress" id="collection-progress">発見 <strong>0 / 6</strong> 種</span></div>
         <ul class="fish-catalog" id="fish-catalog"></ul>
       </section>
-      <p class="play-note"><svg aria-hidden="true"><use href="#hook-icon"/></svg> 釣りをはじめる → 少し待つ → 釣果をチェック。何度でも、気軽にどうぞ。</p>
+      <p class="play-note"><svg aria-hidden="true"><use href="#hook-icon"/></svg> マウス・タッチ・Space／Enterで操作。魚が身をよじったら、離してひと休み。</p>
     </main>
     <footer><span>釣り日和</span><span>あなたの毎日に、ちいさな「釣れた！」を。</span></footer>
   </body>
