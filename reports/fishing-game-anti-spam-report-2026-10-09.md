@@ -2,6 +2,8 @@
 
 作業日：2026年10月9日（日本時間）
 
+記録対象：修正ブランチへのpush完了時点（`e9524272db0b31f7e2e4569b73e4243c7fec1673`）。この後のユーザー指示によるmain・Pagesへの公開作業は本報告書の記録対象外。以下の未反映状態表とソースhashは、修正・検証を完了した当時の記録である。公開準備では資産URLに版を付け、ゲームロジック・入力処理・CSSの内容は変更していない。
+
 対象：[winda-gust/fishing-game](https://github.com/winda-gust/fishing-game)
 
 ## 1. 完了状況と反映範囲
@@ -196,7 +198,7 @@
 
 作業ブランチ：[fix/reeling-anti-spam](https://github.com/winda-gust/fishing-game/tree/fix/reeling-anti-spam)
 
-比較：[main...fix/reeling-anti-spam](https://github.com/winda-gust/fishing-game/compare/main...fix/reeling-anti-spam)
+比較：[基準fd40855...検証対象f01eeed](https://github.com/winda-gust/fishing-game/compare/fd40855c90024718a3f7df887f4355661b266c64...f01eeed2d674bbda5e1dc8c6dd677a2a47062d81)
 
 報告書：[GitHub上の本報告書](https://github.com/winda-gust/fishing-game/blob/fix/reeling-anti-spam/reports/fishing-game-anti-spam-report-2026-10-09.md)
 

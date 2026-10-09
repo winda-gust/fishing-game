@@ -124,9 +124,9 @@ node scripts/verify-reeling-browser.cjs
 
 集計・CSV・ブラウザ結果と必要な画像は `reports/` に保存します。実機スマートフォン、人間の初心者による試遊、実際の画面ロックとは別の検証です。詳細な結果・最終コミット・反映状態は同ディレクトリの日本語報告書を参照してください。
 
-### 修正ブランチを確認する
+### 公開版・修正ブランチを確認する
 
-今回の連打対策は `fix/reeling-anti-spam` ブランチで確認できます。mainと公開サイトへの反映は別途判断するため、公開ゲームはまだこの連打対策を含みません。PCで修正版を確認する場合は、Node.js/npmとPython 3を用意し、新しいフォルダへ取得します。
+連打対策を含む公開版は [こちら](https://winda-gust.github.io/fishing-game/?v=f01eeed) からスマートフォンでも遊べます。修正時のコードと検証結果は `fix/reeling-anti-spam` ブランチにも保存しています。PCで手元のファイルを確認する場合は、Node.js/npmとPython 3を用意し、新しいフォルダへ取得します。
 
 ```sh
 git clone --branch fix/reeling-anti-spam https://github.com/winda-gust/fishing-game.git fishing-game-review
