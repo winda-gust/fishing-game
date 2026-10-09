@@ -126,7 +126,7 @@ node scripts/verify-reeling-browser.cjs
 
 ### 公開版・修正ブランチを確認する
 
-連打対策を含む公開版は [こちら](https://winda-gust.github.io/fishing-game/?v=f01eeed) からスマートフォンでも遊べます。修正時のコードと検証結果は `fix/reeling-anti-spam` ブランチにも保存しています。PCで手元のファイルを確認する場合は、Node.js/npmとPython 3を用意し、新しいフォルダへ取得します。
+[公開サイトはこちら](https://winda-gust.github.io/fishing-game/?v=f01eeed) です。連打対策のコードはmainへ反映済みで、Pagesの公開処理が成功した後にサイトへ反映されます。修正時のコードと検証結果は `fix/reeling-anti-spam` ブランチにも保存しています。PCで手元のファイルを確認する場合は、Node.js/npmとPython 3を用意し、新しいフォルダへ取得します。
 
 ```sh
 git clone --branch fix/reeling-anti-spam https://github.com/winda-gust/fishing-game.git fishing-game-review
