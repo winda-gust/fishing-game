@@ -12,7 +12,7 @@
     "catch-list", "fish-catalog", "collection-progress", "battle-panel", "fish-state",
     "fish-pull", "bite-window", "bite-countdown", "catch-progress", "line-tension",
     "progress-value", "tension-value", "progress-fill", "tension-fill",
-    "tension-warning", "tension-grace", "input-guide", "pause-notice"
+    "tension-warning", "tension-grace", "rest-status", "rest-countdown", "input-guide", "pause-notice"
   ].map(id => [id, document.getElementById(id)]));
   const catalogElements = new Map();
   const keysDown = new Set();
@@ -110,13 +110,13 @@
       case "biting": return ["食いついた！ 今だ！", `新たに「合わせる」を押そう。猶予は${(CONFIG.reactionMs / 1000).toFixed(1)}秒。`];
       case "reeling": return snapshot.needsRelease
         ? ["合わせ成功！ まずは一度離そう。", "押し直して長押しすると巻けます。離している間は、巻くのを休みます。"]
-        : ["魚の動きを見て、巻く・休む。", "落ち着いたら巻く。身をよじる予兆が出たら、離して休もう。"];
+        : ["魚の動きを見て、巻く・休む。", "落ち着いたら巻く。暴れ中に巻くとゲージが戻ります。予兆で休もう。"];
       case "paused": return ["釣りを一時停止しています。", "時間とゲージは止まっています。準備できたら再開し、一度離してから操作しよう。"];
       case "success": return [`${snapshot.caughtFish.name}が釣れた！ +${snapshot.caughtFish.points} pt`, "いい判断でした！ 次はどんな魚に出会えるかな？"];
       case "failure": return {
         early: ["引くのが早すぎた！", "ウキが大きく沈むまで待とう。小さなつつきには合わせないでね。"],
         late: ["合わせるのが遅かった！", `食いついたら${(CONFIG.reactionMs / 1000).toFixed(1)}秒以内に、新たにボタンを押そう。`],
-        line: ["糸が切れた！", "魚が身をよじる予兆や強い張りが出たら、離して巻くのを休もう。"]
+        line: ["糸が切れた！", `予兆で離し、少し休み続けよう。危険が残るときは張り${CONFIG.safeTension}%以下まで休もう。`]
       }[snapshot.failureReason];
     }
   }
@@ -161,7 +161,7 @@
     setText("fish-state", inFight ? {
       calm: "落ち着いている — 巻くチャンス！",
       warning: "予兆：魚が身をよじった！ 離そう。",
-      struggling: "暴れている — 離して休もう。"
+      struggling: "暴れている — 巻くとゲージが戻る！"
     }[snapshot.fishState] : {
       idle: "合わせた後は、巻く・休むで引き寄せよう。", waiting: "今は待とう。早押しには注意。",
       nibbling: "小さなつつきには、まだ合わせない。", biting: "今、新たに押して合わせよう！",
@@ -178,12 +178,40 @@
       elements[fill].style.width = `${value}%`;
       setText(label, `${Math.round(value)}%`);
     }
-    const danger = inFight && snapshot.tension >= 75;
+    const retainedDanger = inFight && snapshot.overloadMs > 0;
+    const danger = inFight && (snapshot.tension >= 75 || retainedDanger);
     const overloaded = inFight && snapshot.tension >= 100;
     elements["line-tension"].classList.toggle("is-danger", danger);
     elements["line-tension"].classList.toggle("is-overloaded", overloaded);
-    setText("tension-warning", overloaded ? "糸が切れそう！ 今すぐ離そう。" : danger ? "張りが強い。離して休もう。" : "");
-    setText("tension-grace", overloaded ? `あと ${Math.max(0, (CONFIG.breakGraceMs - snapshot.overloadMs) / 1000).toFixed(1)}秒` : "");
+    setText("tension-warning", retainedDanger
+      ? `危険は残っています。${CONFIG.safeTension}%以下まで休もう。`
+      : overloaded ? "糸が切れそう！ 今すぐ離そう。" : danger ? "張りが強い。離して休もう。" : "");
+    setText("tension-grace", overloaded || retainedDanger
+      ? `残り猶予 ${Math.max(0, (CONFIG.breakGraceMs - snapshot.overloadMs) / 1000).toFixed(1)}秒` : "");
+    let restState = "inactive";
+    let restMessage = "少し休み続けると張りが回復します。";
+    if (inFight) {
+      if (phase === "paused") {
+        restState = "paused";
+        restMessage = "一時停止中：回復待ちも停止しています。";
+      } else if (snapshot.needsRelease) {
+        restState = "neutral";
+        restMessage = "一度離してから、巻く・休むを始めよう。";
+      } else if (snapshot.isReeling) {
+        restState = "held";
+        restMessage = "巻き中：予兆が出たら離して休もう。";
+      } else if (snapshot.restRemainingMs > 0) {
+        restState = "waiting";
+        restMessage = "回復待ち：離したまま休もう。";
+      } else {
+        restState = "recovering";
+        restMessage = snapshot.tension > 0 ? "張りを回復中。十分下げてから巻こう。" : "張りが落ち着きました。魚の動きを見よう。";
+      }
+    }
+    elements["rest-status"].dataset.state = restState;
+    setText("rest-status", restMessage);
+    setText("rest-countdown", inFight && (restState === "waiting" || restState === "paused") && snapshot.restRemainingMs > 0
+      ? `あと ${(snapshot.restRemainingMs / 1000).toFixed(1)}秒` : "");
     let buttonLabel = "投げる";
     let guide = "投げる → 大きく沈んだら押す → 長押しで巻く／離して休む";
     if (["waiting", "nibbling", "biting"].includes(phase)) {
@@ -191,7 +219,8 @@
       guide = phase === "biting" ? "今、新たに押そう！ 投げた時の長押しでは合わせられません。" : "小さな反応はまだ待とう。大きく沈んだら、押し直して合わせる。";
     } else if (phase === "reeling") {
       buttonLabel = snapshot.needsRelease ? "一度離してから巻く" : snapshot.isReeling ? "巻いています…" : "長押しで巻く";
-      guide = snapshot.needsRelease ? "合わせた押下は巻きに持ち越せません。一度離し、押し直そう。" : "長押しで巻く／離して休む。予兆や強い張りが出たら休もう。";
+      guide = snapshot.needsRelease ? "合わせ・再開の押下は巻きに持ち越せません。一度離し、押し直そう。"
+        : `離して${(CONFIG.restDelayMs / 1000).toFixed(1)}秒待つと回復。危険が残るときは張り${CONFIG.safeTension}%以下まで休もう。`;
     } else if (phase === "paused") {
       buttonLabel = "準備して再開";
       guide = "再開の押下では合わせたり巻いたりしません。一度離してから操作しよう。";

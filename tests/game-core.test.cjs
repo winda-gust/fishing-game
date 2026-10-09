@@ -253,9 +253,13 @@ test("hook held through repeated input cannot wind until a release and fresh pre
   game.advance(10000);
   assert.equal(game.getSnapshot().phase, "reeling");
   assert.equal(game.getSnapshot().progress, 0);
-  assert.equal(game.getSnapshot().tension, 0);
+  assert.equal(game.getSnapshot().tension, CONFIG.initialTension);
+  assert.equal(game.getSnapshot().restElapsedMs, 0);
   game.release();
   assert.equal(game.getSnapshot().needsRelease, false);
+  assert.equal(game.getSnapshot().fishState, "struggling");
+  game.advance(game.getSnapshot().fishStateRemainingMs);
+  assert.equal(game.getSnapshot().fishState, "calm");
   game.press();
   assert.equal(game.getSnapshot().isReeling, true);
   game.advance(100);
@@ -323,7 +327,7 @@ test("long rests keep every fish and preserve progress while tension decreases, 
   assert.equal(game.getSnapshot().progress, 0);
 });
 
-test("one moment at tension 100 is recoverable; grace is exactly 900ms and rest clears overload", () => {
+test("one moment at tension 100 is recoverable; grace is exactly 900ms and sufficient rest clears overload", () => {
   const game = reelingGame();
   game.press();
   game.advance(4320);
@@ -337,8 +341,8 @@ test("one moment at tension 100 is recoverable; grace is exactly 900ms and rest 
   assert.equal(game.getSnapshot().overloadMs, 899);
   const progress = game.getSnapshot().progress;
   game.advance(0.001);
-  assert.equal(game.getSnapshot().overloadMs, 0);
-  assert.ok(game.getSnapshot().tension < 100);
+  assert.equal(game.getSnapshot().overloadMs, 899);
+  assert.equal(game.getSnapshot().tension, 100);
   assert.equal(game.getSnapshot().progress, progress);
   // Keep resting before winding again: the reset grace does not erase existing tension.
   game.advance(5000);
@@ -367,7 +371,7 @@ test("pause freezes each active phase, including an overloaded reel, and clears 
     assert.equal(paused.pausedPhase, phase);
     assert.equal(paused.isHeld, false);
     assert.equal(paused.isReeling, false);
-    for (const key of ["progress", "tension", "overloadMs", "phaseRemainingMs", "biteRemainingMs", "fishState", "fishStateRemainingMs"]) {
+    for (const key of ["progress", "tension", "overloadMs", "restElapsedMs", "restRemainingMs", "phaseRemainingMs", "biteRemainingMs", "fishState", "fishStateRemainingMs"]) {
       assert.equal(paused[key], before[key]);
     }
     game.advance(1000000);
@@ -390,7 +394,8 @@ test("pause freezes each active phase, including an overloaded reel, and clears 
       assert.equal(game.getSnapshot().needsRelease, true);
       game.advance(1);
       assert.equal(game.getSnapshot().progress, before.progress);
-      assert.equal(game.getSnapshot().overloadMs, 0);
+      assert.equal(game.getSnapshot().overloadMs, before.overloadMs);
+      assert.equal(game.getSnapshot().tension, before.tension);
       game.release();
       game.press();
       assert.equal(game.getSnapshot().isReeling, true);
@@ -459,7 +464,7 @@ test("successes accumulate in order, repeated fish count, and intervening failur
 });
 
 test("snapshots expose exactly the UI contract and never selected identity before success", () => {
-  const keys = ["phase", "pausedPhase", "isHeld", "isReeling", "needsRelease", "progress", "tension", "overloadMs", "biteRemainingMs", "phaseRemainingMs", "fishState", "fishStateRemainingMs", "pullHint", "shadowScale", "caughtFish", "failureReason", "totalScore", "catches"];
+  const keys = ["phase", "pausedPhase", "isHeld", "isReeling", "needsRelease", "progress", "tension", "overloadMs", "restElapsedMs", "restRemainingMs", "biteRemainingMs", "phaseRemainingMs", "fishState", "fishStateRemainingMs", "pullHint", "shadowScale", "caughtFish", "failureReason", "totalScore", "catches"];
   for (const phase of ["idle", "waiting", "nibbling", "biting", "reeling", "paused", "failure"]) {
     const state = phaseGame(phase).getSnapshot();
     assert.deepEqual(Object.keys(state), keys);
@@ -542,17 +547,25 @@ test("fractional random wait schedules agree at 60fps and in one large advance",
 });
 
 test("line break wins when progress 100 and overload 900ms coincide, resolving only once", () => {
-  const game = reelingGame();
-  // From zero tension the next hold adds 65.916 progress before its 5620ms break.
-  const firstCalmMs = 34.084 / FISH_BEHAVIORS.aji.progressRate * 1000;
+  const game = reelingGame("iwashi");
+  const behavior = FISH_BEHAVIORS.iwashi;
+  const cycleMs = behavior.calmMs + behavior.warningMs + behavior.struggleMs;
+  const tensionAtStruggle = (behavior.calmMs * behavior.tensionCalm + behavior.warningMs * behavior.tensionWarning) / 1000;
+  const capWithinStruggleMs = (100 - tensionAtStruggle) * 1000 / behavior.tensionStruggle;
+  const finalCalmMs = CONFIG.breakGraceMs - (behavior.struggleMs - capWithinStruggleMs);
+  const gainedBeforeBreak = behavior.progressRate * (behavior.calmMs + finalCalmMs) / 1000
+    + behavior.progressRate * CONFIG.warningProgressFactor * behavior.warningMs / 1000
+    - behavior.regressionRate * behavior.struggleMs / 1000;
+  // Prepare just enough earlier progress that next cycle's grace and progress meet.
+  const firstCalmMs = (100 - gainedBeforeBreak) / behavior.progressRate * 1000;
   game.press();
   game.advance(firstCalmMs);
   game.release();
-  game.advance(5600 - firstCalmMs);
+  game.advance(cycleMs - firstCalmMs);
   assert.equal(game.getSnapshot().fishState, "calm");
   assert.equal(game.getSnapshot().tension, 0);
   game.press();
-  game.advance(5620);
+  game.advance(cycleMs + finalCalmMs);
   assert.equal(game.getSnapshot().phase, "failure");
   assert.equal(game.getSnapshot().failureReason, "line");
   assert.equal(game.getSnapshot().catches.length, 0);
@@ -581,4 +594,317 @@ test("invalid randomness and elapsed time are rejected without changing game sta
     game.advance(0);
     assert.deepEqual(game.getSnapshot(), before);
   }
+});
+
+function dangerousGame() {
+  const game = reelingGame();
+  game.press();
+  game.advance(5020);
+  assert.equal(game.getSnapshot().tension, 100);
+  assert.equal(game.getSnapshot().overloadMs, 700);
+  return game;
+}
+
+test("recovery waits exactly 300ms and applies relief only to time beyond the delay", () => {
+  assert.equal(CONFIG.restDelayMs, 300);
+  assert.equal(CONFIG.safeTension, 70);
+  const game = reelingGame();
+  game.press();
+  game.advance(1000);
+  game.release();
+  const tension = game.getSnapshot().tension;
+  const progress = game.getSnapshot().progress;
+  game.advance(299);
+  assert.equal(game.getSnapshot().tension, tension);
+  assert.equal(game.getSnapshot().restElapsedMs, 299);
+  assert.equal(game.getSnapshot().restRemainingMs, 1);
+  game.advance(1);
+  assert.equal(game.getSnapshot().tension, tension);
+  assert.equal(game.getSnapshot().restElapsedMs, 300);
+  assert.equal(game.getSnapshot().restRemainingMs, 0);
+  game.advance(1);
+  assert.equal(game.getSnapshot().tension, tension - CONFIG.restRelief / 1000);
+  assert.equal(game.getSnapshot().progress, progress);
+
+  const coarse = reelingGame();
+  coarse.press();
+  coarse.advance(1000);
+  coarse.release();
+  coarse.advance(301);
+  assert.deepEqual(game.getSnapshot(), coarse.getSnapshot());
+});
+
+test("short releases never accumulate towards recovery and real winding restarts the delay", () => {
+  const game = reelingGame();
+  for (let index = 0; index < 12; index += 1) {
+    game.press();
+    assert.equal(game.getSnapshot().isReeling, true);
+    assert.equal(game.getSnapshot().restElapsedMs, 0);
+    game.advance(50);
+    game.release();
+    const tension = game.getSnapshot().tension;
+    game.advance(CONFIG.restDelayMs - 1);
+    assert.equal(game.getSnapshot().tension, tension);
+    assert.equal(game.getSnapshot().restRemainingMs, 1);
+  }
+  game.press();
+  game.release();
+  assert.equal(game.getSnapshot().restElapsedMs, 0);
+  game.advance(300);
+  const tension = game.getSnapshot().tension;
+  assert.ok(tension > CONFIG.initialTension);
+  game.advance(10);
+  assert.equal(game.getSnapshot().tension, Math.round((tension - 0.28) * 1e6) / 1e6);
+});
+
+test("700ms used danger survives a short release and leaves exactly 200ms of winding grace", () => {
+  const game = dangerousGame();
+  game.release();
+  game.advance(10);
+  assert.equal(game.getSnapshot().tension, 100);
+  assert.equal(game.getSnapshot().overloadMs, 700);
+  game.press();
+  game.advance(199);
+  assert.equal(game.getSnapshot().phase, "reeling");
+  assert.equal(game.getSnapshot().overloadMs, 899);
+  game.advance(1);
+  assert.equal(game.getSnapshot().phase, "failure");
+  assert.equal(game.getSnapshot().failureReason, "line");
+  assert.equal(game.getSnapshot().overloadMs, 900);
+  assert.equal(game.getSnapshot().totalScore, 0);
+});
+
+test("danger freezes through the recovery delay and clears only at the resting 70% boundary", () => {
+  const game = dangerousGame();
+  game.release();
+  game.advance(CONFIG.restDelayMs);
+  assert.equal(game.getSnapshot().tension, 100);
+  assert.equal(game.getSnapshot().overloadMs, 700);
+  const recoveryToSafeMs = (100 - CONFIG.safeTension) * 1000 / CONFIG.restRelief;
+  game.advance(recoveryToSafeMs - 0.001);
+  assert.equal(game.getSnapshot().phase, "reeling");
+  assert.ok(game.getSnapshot().tension > CONFIG.safeTension);
+  assert.equal(game.getSnapshot().overloadMs, 700);
+  game.advance(0.001);
+  assert.equal(game.getSnapshot().tension, CONFIG.safeTension);
+  assert.equal(game.getSnapshot().overloadMs, 0);
+  game.advance(100);
+  assert.equal(game.getSnapshot().tension, 67.2);
+  assert.equal(game.getSnapshot().overloadMs, 0);
+});
+
+test("slipping just below 100 does not reset danger; a renewed cap continues the old overload", () => {
+  const game = dangerousGame();
+  game.release();
+  game.advance(CONFIG.restDelayMs + 1);
+  assert.equal(game.getSnapshot().tension, 99.972);
+  assert.equal(game.getSnapshot().overloadMs, 700);
+  assert.equal(game.getSnapshot().fishState, "struggling");
+  game.press();
+  const recapMs = 0.028 * 1000 / FISH_BEHAVIORS.aji.tensionStruggle;
+  game.advance(recapMs);
+  assert.equal(game.getSnapshot().tension, 100);
+  assert.equal(game.getSnapshot().overloadMs, 700);
+  game.advance(199);
+  assert.equal(game.getSnapshot().phase, "reeling");
+  assert.equal(game.getSnapshot().overloadMs, 899);
+  game.advance(1);
+  assert.equal(game.getSnapshot().failureReason, "line");
+});
+
+test("duplicate releases and same-timestamp edges cannot heal, clear danger, or reset an ongoing rest", () => {
+  const game = dangerousGame();
+  game.release();
+  game.advance(100);
+  const resting = game.getSnapshot();
+  for (let index = 0; index < 8; index += 1) {
+    assert.equal(game.release(), false);
+    game.advance(0);
+    assert.deepEqual(game.getSnapshot(), resting);
+  }
+  game.advance(200);
+  assert.equal(game.getSnapshot().restElapsedMs, 300);
+  assert.equal(game.getSnapshot().tension, 100);
+  assert.equal(game.getSnapshot().overloadMs, 700);
+  for (let index = 0; index < 8; index += 1) {
+    game.press();
+    assert.equal(game.press(), false);
+    game.release();
+    game.release();
+    game.advance(0);
+    assert.equal(game.getSnapshot().restElapsedMs, 0);
+    assert.equal(game.getSnapshot().tension, 100);
+    assert.equal(game.getSnapshot().overloadMs, 700);
+  }
+});
+
+test("struggling regressions depend on winding time and fish, while resting preserves progress", () => {
+  assert.deepEqual(FISHES.map((fish) => FISH_BEHAVIORS[fish.id].regressionRate), [4, 4, 5, 5, 6, 7]);
+  for (const fish of FISHES) {
+    const game = reelingGame(fish.id);
+    const behavior = FISH_BEHAVIORS[fish.id];
+    game.press();
+    game.advance(1000);
+    game.release();
+    game.advance(behavior.calmMs - 1000 + behavior.warningMs);
+    const before = game.getSnapshot();
+    assert.equal(before.fishState, "struggling");
+    game.press();
+    game.advance(250);
+    const wound = game.getSnapshot();
+    assert.equal(wound.progress, before.progress - behavior.regressionRate / 4);
+    assert.equal(wound.tension, before.tension + behavior.tensionStruggle / 4);
+    game.release();
+    game.advance(500);
+    assert.equal(game.getSnapshot().progress, wound.progress);
+    assert.equal(game.getSnapshot().tension, Math.round(Math.max(0, wound.tension - CONFIG.restRelief / 5) * 1e6) / 1e6);
+  }
+});
+
+test("progress zero, tension zero, and huge resting advances remain bounded without zero-length event loops", () => {
+  for (const fish of FISHES) {
+    const game = reelingGame(fish.id);
+    const behavior = FISH_BEHAVIORS[fish.id];
+    game.advance(behavior.calmMs + behavior.warningMs);
+    assert.equal(game.getSnapshot().progress, 0);
+    assert.equal(game.getSnapshot().tension, 0);
+    game.press();
+    game.advance(250);
+    assert.equal(game.getSnapshot().progress, 0);
+    game.release();
+    game.advance(Number.MAX_VALUE);
+    const state = game.getSnapshot();
+    assert.equal(state.phase, "reeling");
+    assert.equal(state.progress, 0);
+    assert.equal(state.tension, 0);
+    assert.equal(state.overloadMs, 0);
+    assert.equal(state.restElapsedMs, CONFIG.restDelayMs);
+    assert.equal(state.restRemainingMs, 0);
+  }
+});
+
+test("pause preserves partial rest and danger; held resume grants no recovery and release continues saved rest", () => {
+  const game = dangerousGame();
+  game.release();
+  game.advance(100);
+  game.pause();
+  const paused = game.getSnapshot();
+  assert.equal(paused.restElapsedMs, 100);
+  assert.equal(paused.restRemainingMs, 200);
+  game.advance(100000);
+  game.release();
+  assert.deepEqual(game.getSnapshot(), paused);
+  game.press();
+  assert.equal(game.getSnapshot().needsRelease, true);
+  game.advance(10000);
+  assert.equal(game.getSnapshot().tension, 100);
+  assert.equal(game.getSnapshot().overloadMs, 700);
+  assert.equal(game.getSnapshot().restElapsedMs, 100);
+  game.release();
+  game.release();
+  game.advance(199);
+  assert.equal(game.getSnapshot().restElapsedMs, 299);
+  assert.equal(game.getSnapshot().tension, 100);
+  game.advance(1);
+  assert.equal(game.getSnapshot().tension, 100);
+  game.advance(1);
+  assert.equal(game.getSnapshot().tension, 99.972);
+  assert.equal(game.getSnapshot().overloadMs, 700);
+});
+
+test("pausing a winding input does not pre-earn rest, and pausing recovery grants no extra relief", () => {
+  const game = dangerousGame();
+  game.pause();
+  assert.equal(game.getSnapshot().restElapsedMs, 0);
+  game.advance(5000);
+  game.press();
+  game.advance(5000);
+  assert.equal(game.getSnapshot().restElapsedMs, 0);
+  assert.equal(game.getSnapshot().tension, 100);
+  assert.equal(game.getSnapshot().overloadMs, 700);
+  game.release();
+  game.advance(400);
+  assert.equal(game.getSnapshot().tension, 97.2);
+  assert.equal(game.getSnapshot().overloadMs, 700);
+  game.pause();
+  const paused = game.getSnapshot();
+  game.advance(100000);
+  assert.deepEqual(game.getSnapshot(), paused);
+  game.press();
+  game.advance(100000);
+  assert.equal(game.getSnapshot().tension, 97.2);
+  assert.equal(game.getSnapshot().restElapsedMs, 300);
+  assert.equal(game.getSnapshot().overloadMs, 700);
+  game.release();
+  game.advance(100);
+  assert.equal(game.getSnapshot().tension, 94.4);
+  assert.equal(game.getSnapshot().overloadMs, 700);
+});
+
+test("reset and a new attempt clear anti-spam state after resting danger or paused recovery", () => {
+  for (const pause of [false, true]) {
+    const game = dangerousGame();
+    game.release();
+    game.advance(100);
+    if (pause) game.pause();
+    game.reset();
+    assert.equal(game.getSnapshot().restElapsedMs, 0);
+    assert.equal(game.getSnapshot().restRemainingMs, 0);
+    assert.equal(game.getSnapshot().overloadMs, 0);
+    cast(game);
+    hook(game);
+    assert.equal(game.getSnapshot().restElapsedMs, 0);
+    assert.equal(game.getSnapshot().restRemainingMs, 300);
+    assert.equal(game.getSnapshot().overloadMs, 0);
+    assert.equal(game.getSnapshot().tension, 20);
+    assert.equal(smartFinish(game).phase, "success");
+  }
+});
+
+test("fixed 50/50ms spam cannot use tiny rests to catch any of the six fish", () => {
+  for (const fish of FISHES) {
+    const game = reelingGame(fish.id);
+    for (let time = 0; time < 60000 && game.getSnapshot().phase === "reeling"; time += 100) {
+      game.press();
+      game.advance(50);
+      game.release();
+      game.advance(50);
+    }
+    assert.equal(game.getSnapshot().phase, "failure", fish.id);
+    assert.equal(game.getSnapshot().failureReason, "line", fish.id);
+    assert.equal(game.getSnapshot().totalScore, 0);
+    assert.deepEqual(game.getSnapshot().catches, []);
+  }
+});
+
+test("timestamped recovery, hysteresis, pause, resume, and reset agree at coarse/30/60/120fps", () => {
+  const events = [
+    [0, "press"], [5020, "release"], [5020, "release"], [5319, null], [5320, null], [5321, null],
+    [5400, "press"], [5490, "release"], [5590, "pause"], [30000, null], [30000, "press"],
+    [32000, null], [32000, "release"], [32199, null], [32200, null],
+    [33271.42757142857, null], [33271.42857142857, null],
+    [33300, "press"], [33400, "release"], [33701, null], [33701, "reset"], [100000, null],
+  ];
+  function replay(maxStep) {
+    const game = reelingGame();
+    const snapshots = [];
+    let previousTime = 0;
+    for (const [time, action] of events) {
+      splitAdvance(game, time - previousTime, maxStep);
+      if (action) game[action]();
+      snapshots.push(game.getSnapshot());
+      previousTime = time;
+    }
+    return snapshots;
+  }
+  const coarse = replay(Infinity);
+  assert.equal(coarse[3].restRemainingMs, 1);
+  assert.equal(coarse[4].tension, 100);
+  assert.equal(coarse[5].overloadMs, 700);
+  assert.equal(coarse[9].phase, "paused");
+  assert.equal(coarse[11].tension, 100);
+  assert.equal(coarse[15].overloadMs, 745.2);
+  assert.equal(coarse[16].overloadMs, 0);
+  assert.equal(coarse.at(-1).phase, "idle");
+  for (const fps of [30, 60, 120]) assert.deepEqual(replay(1000 / fps), coarse, `${fps}fps`);
 });

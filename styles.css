@@ -74,7 +74,10 @@ h1 { margin: 0; font-size: clamp(23px, 3vw, 32px); letter-spacing: .025em; line-
 .line-tension.is-danger > span { background: #b44d3a; }
 .line-tension.is-overloaded { outline: 2px solid #b44d3a; outline-offset: 2px; }
 .battle-panel[data-active="false"] .gauge-track { opacity: .65; }
-.tension-alert { display: flex; justify-content: space-between; gap: 4px; min-height: 24px; padding-top: 5px; color: #a43e2f; font-size: 10px; font-weight: 700; }
+.tension-alert { display: flex; justify-content: space-between; gap: 6px; min-height: 36px; padding-top: 5px; color: #a43e2f; font-size: 10px; font-weight: 700; line-height: 1.45; }
+#tension-grace { flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.rest-status { display: flex; justify-content: space-between; gap: 6px; margin: 0 0 9px; min-height: 18px; color: #627357; font-size: 10px; line-height: 1.6; }
+#rest-countdown { flex-shrink: 0; font-variant-numeric: tabular-nums; }
 .pause-notice { margin: 0 0 12px; padding: 9px 12px; border-radius: 8px; background: #fff1d9; color: #7c591e; font-size: 11px; }
 .input-guide { margin: 10px 0 0; min-height: 33px; color: #61735b; font-size: 11px; line-height: 1.6; }
 .fish-button { background: var(--green); color: #fff; border: 1px solid var(--green); padding: 13px 19px; border-radius: 10px; min-height: 50px; display: flex; align-items: center; justify-content: center; gap: 10px; flex: 1; font-size: 13px; font-weight: 700; transition: background .15s, transform .15s; }

@@ -1,0 +1,3622 @@
+{
+  "baselineCommit": "fd40855c90024718a3f7df887f4355661b266c64",
+  "sourceSha256": {
+    "before": "3896456500a95b023c30fab1b9f9330e593f50e1963d8abbe0aef91caeb0448e",
+    "after": "5ffcdac2655219b9da8ba0a8404fee2ad0ac3d2e90bf6763038ee9794120d092"
+  },
+  "comparison": "committed baseline game-core.js versus current working-tree game-core.js",
+  "observationLimitMs": 180000,
+  "controlSamplingMs": 5,
+  "terminalTimeUncertaintyMs": 5,
+  "reelStartOffsetsMs": [
+    0,
+    175,
+    425
+  ],
+  "random": "first sample = species weighted midpoint; subsequent waiting samples = 0.5",
+  "dangerTrace": "CSV records up to first 8 danger events plus final state as elapsedMs:event:fishState:input:tensionPercent:dangerMs; traces are sampled at <=5ms, not full raw logs",
+  "adaptive": "75% starts high-tension rest, 40% permits winding again; non-calm always rest; requested lag applies to both press and release",
+  "recoveryDelayMs": 300,
+  "safeTension": 70,
+  "breakGraceMs": 900,
+  "struggleRegressionRates": {
+    "aji": 4,
+    "iwashi": 4,
+    "saba": 5,
+    "tai": 5,
+    "maguro": 6,
+    "gold": 7
+  },
+  "fishRulesUnchanged": true,
+  "recoveryBoundaryProbes": [
+    {
+      "version": "before",
+      "fish": "aji",
+      "restMs": 299,
+      "tensionBefore": 100,
+      "tensionAfter": 91.628,
+      "dangerBeforeMs": 700,
+      "dangerAfterMs": 0
+    },
+    {
+      "version": "before",
+      "fish": "aji",
+      "restMs": 300,
+      "tensionBefore": 100,
+      "tensionAfter": 91.6,
+      "dangerBeforeMs": 700,
+      "dangerAfterMs": 0
+    },
+    {
+      "version": "before",
+      "fish": "aji",
+      "restMs": 301,
+      "tensionBefore": 100,
+      "tensionAfter": 91.572,
+      "dangerBeforeMs": 700,
+      "dangerAfterMs": 0
+    },
+    {
+      "version": "before",
+      "fish": "iwashi",
+      "restMs": 299,
+      "tensionBefore": 100,
+      "tensionAfter": 91.628,
+      "dangerBeforeMs": 703,
+      "dangerAfterMs": 0
+    },
+    {
+      "version": "before",
+      "fish": "iwashi",
+      "restMs": 300,
+      "tensionBefore": 100,
+      "tensionAfter": 91.6,
+      "dangerBeforeMs": 703,
+      "dangerAfterMs": 0
+    },
+    {
+      "version": "before",
+      "fish": "iwashi",
+      "restMs": 301,
+      "tensionBefore": 100,
+      "tensionAfter": 91.572,
+      "dangerBeforeMs": 703,
+      "dangerAfterMs": 0
+    },
+    {
+      "version": "before",
+      "fish": "saba",
+      "restMs": 299,
+      "tensionBefore": 100,
+      "tensionAfter": 91.628,
+      "dangerBeforeMs": 700.517241,
+      "dangerAfterMs": 0
+    },
+    {
+      "version": "before",
+      "fish": "saba",
+      "restMs": 300,
+      "tensionBefore": 100,
+      "tensionAfter": 91.6,
+      "dangerBeforeMs": 700.517241,
+      "dangerAfterMs": 0
+    },
+    {
+      "version": "before",
+      "fish": "saba",
+      "restMs": 301,
+      "tensionBefore": 100,
+      "tensionAfter": 91.572,
+      "dangerBeforeMs": 700.517241,
+      "dangerAfterMs": 0
+    },
+    {
+      "version": "before",
+      "fish": "tai",
+      "restMs": 299,
+      "tensionBefore": 100,
+      "tensionAfter": 91.628,
+      "dangerBeforeMs": 701.153846,
+      "dangerAfterMs": 0
+    },
+    {
+      "version": "before",
+      "fish": "tai",
+      "restMs": 300,
+      "tensionBefore": 100,
+      "tensionAfter": 91.6,
+      "dangerBeforeMs": 701.153846,
+      "dangerAfterMs": 0
+    },
+    {
+      "version": "before",
+      "fish": "tai",
+      "restMs": 301,
+      "tensionBefore": 100,
+      "tensionAfter": 91.572,
+      "dangerBeforeMs": 701.153846,
+      "dangerAfterMs": 0
+    },
+    {
+      "version": "before",
+      "fish": "maguro",
+      "restMs": 299,
+      "tensionBefore": 100,
+      "tensionAfter": 91.628,
+      "dangerBeforeMs": 704.333333,
+      "dangerAfterMs": 0
+    },
+    {
+      "version": "before",
+      "fish": "maguro",
+      "restMs": 300,
+      "tensionBefore": 100,
+      "tensionAfter": 91.6,
+      "dangerBeforeMs": 704.333333,
+      "dangerAfterMs": 0
+    },
+    {
+      "version": "before",
+      "fish": "maguro",
+      "restMs": 301,
+      "tensionBefore": 100,
+      "tensionAfter": 91.572,
+      "dangerBeforeMs": 704.333333,
+      "dangerAfterMs": 0
+    },
+    {
+      "version": "before",
+      "fish": "gold",
+      "restMs": 299,
+      "tensionBefore": 100,
+      "tensionAfter": 91.628,
+      "dangerBeforeMs": 703.333333,
+      "dangerAfterMs": 0
+    },
+    {
+      "version": "before",
+      "fish": "gold",
+      "restMs": 300,
+      "tensionBefore": 100,
+      "tensionAfter": 91.6,
+      "dangerBeforeMs": 703.333333,
+      "dangerAfterMs": 0
+    },
+    {
+      "version": "before",
+      "fish": "gold",
+      "restMs": 301,
+      "tensionBefore": 100,
+      "tensionAfter": 91.572,
+      "dangerBeforeMs": 703.333333,
+      "dangerAfterMs": 0
+    },
+    {
+      "version": "after",
+      "fish": "aji",
+      "restMs": 299,
+      "tensionBefore": 100,
+      "tensionAfter": 100,
+      "dangerBeforeMs": 700,
+      "dangerAfterMs": 700
+    },
+    {
+      "version": "after",
+      "fish": "aji",
+      "restMs": 300,
+      "tensionBefore": 100,
+      "tensionAfter": 100,
+      "dangerBeforeMs": 700,
+      "dangerAfterMs": 700
+    },
+    {
+      "version": "after",
+      "fish": "aji",
+      "restMs": 301,
+      "tensionBefore": 100,
+      "tensionAfter": 99.972,
+      "dangerBeforeMs": 700,
+      "dangerAfterMs": 700
+    },
+    {
+      "version": "after",
+      "fish": "iwashi",
+      "restMs": 299,
+      "tensionBefore": 100,
+      "tensionAfter": 100,
+      "dangerBeforeMs": 703,
+      "dangerAfterMs": 703
+    },
+    {
+      "version": "after",
+      "fish": "iwashi",
+      "restMs": 300,
+      "tensionBefore": 100,
+      "tensionAfter": 100,
+      "dangerBeforeMs": 703,
+      "dangerAfterMs": 703
+    },
+    {
+      "version": "after",
+      "fish": "iwashi",
+      "restMs": 301,
+      "tensionBefore": 100,
+      "tensionAfter": 99.972,
+      "dangerBeforeMs": 703,
+      "dangerAfterMs": 703
+    },
+    {
+      "version": "after",
+      "fish": "saba",
+      "restMs": 299,
+      "tensionBefore": 100,
+      "tensionAfter": 100,
+      "dangerBeforeMs": 700.517241,
+      "dangerAfterMs": 700.517241
+    },
+    {
+      "version": "after",
+      "fish": "saba",
+      "restMs": 300,
+      "tensionBefore": 100,
+      "tensionAfter": 100,
+      "dangerBeforeMs": 700.517241,
+      "dangerAfterMs": 700.517241
+    },
+    {
+      "version": "after",
+      "fish": "saba",
+      "restMs": 301,
+      "tensionBefore": 100,
+      "tensionAfter": 99.972,
+      "dangerBeforeMs": 700.517241,
+      "dangerAfterMs": 700.517241
+    },
+    {
+      "version": "after",
+      "fish": "tai",
+      "restMs": 299,
+      "tensionBefore": 100,
+      "tensionAfter": 100,
+      "dangerBeforeMs": 701.153846,
+      "dangerAfterMs": 701.153846
+    },
+    {
+      "version": "after",
+      "fish": "tai",
+      "restMs": 300,
+      "tensionBefore": 100,
+      "tensionAfter": 100,
+      "dangerBeforeMs": 701.153846,
+      "dangerAfterMs": 701.153846
+    },
+    {
+      "version": "after",
+      "fish": "tai",
+      "restMs": 301,
+      "tensionBefore": 100,
+      "tensionAfter": 99.972,
+      "dangerBeforeMs": 701.153846,
+      "dangerAfterMs": 701.153846
+    },
+    {
+      "version": "after",
+      "fish": "maguro",
+      "restMs": 299,
+      "tensionBefore": 100,
+      "tensionAfter": 100,
+      "dangerBeforeMs": 704.333333,
+      "dangerAfterMs": 704.333333
+    },
+    {
+      "version": "after",
+      "fish": "maguro",
+      "restMs": 300,
+      "tensionBefore": 100,
+      "tensionAfter": 100,
+      "dangerBeforeMs": 704.333333,
+      "dangerAfterMs": 704.333333
+    },
+    {
+      "version": "after",
+      "fish": "maguro",
+      "restMs": 301,
+      "tensionBefore": 100,
+      "tensionAfter": 99.972,
+      "dangerBeforeMs": 704.333333,
+      "dangerAfterMs": 704.333333
+    },
+    {
+      "version": "after",
+      "fish": "gold",
+      "restMs": 299,
+      "tensionBefore": 100,
+      "tensionAfter": 100,
+      "dangerBeforeMs": 703.333333,
+      "dangerAfterMs": 703.333333
+    },
+    {
+      "version": "after",
+      "fish": "gold",
+      "restMs": 300,
+      "tensionBefore": 100,
+      "tensionAfter": 100,
+      "dangerBeforeMs": 703.333333,
+      "dangerAfterMs": 703.333333
+    },
+    {
+      "version": "after",
+      "fish": "gold",
+      "restMs": 301,
+      "tensionBefore": 100,
+      "tensionAfter": 99.972,
+      "dangerBeforeMs": 703.333333,
+      "dangerAfterMs": 703.333333
+    }
+  ],
+  "aggregate": [
+    {
+      "version": "before",
+      "fish": "aji",
+      "condition": "held",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "aji",
+      "condition": "held",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "aji",
+      "condition": "adaptive-0ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        8.16,
+        8.585
+      ],
+      "maxTension": 62,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "aji",
+      "condition": "adaptive-0ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        8.16,
+        8.585
+      ],
+      "maxTension": 62,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "aji",
+      "condition": "adaptive-150ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        8.39,
+        11.5
+      ],
+      "maxTension": 59,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "aji",
+      "condition": "adaptive-150ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        8.39,
+        11.5
+      ],
+      "maxTension": 63.2,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "aji",
+      "condition": "adaptive-200ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        8.47,
+        11.605
+      ],
+      "maxTension": 58,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "aji",
+      "condition": "adaptive-200ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        8.47,
+        11.605
+      ],
+      "maxTension": 63.6,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "aji",
+      "condition": "adaptive-250ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        8.545,
+        11.71
+      ],
+      "maxTension": 57,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "aji",
+      "condition": "adaptive-250ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        8.545,
+        11.71
+      ],
+      "maxTension": 64,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "aji",
+      "condition": "fixed-50/50ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        16.945,
+        17.37
+      ],
+      "maxTension": 20.7,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "aji",
+      "condition": "fixed-50/50ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "aji",
+      "condition": "fixed-100/100ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        16.895,
+        17.32
+      ],
+      "maxTension": 21.4,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "aji",
+      "condition": "fixed-100/100ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "aji",
+      "condition": "fixed-50/150ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        33.845,
+        34.27
+      ],
+      "maxTension": 20.7,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "aji",
+      "condition": "fixed-50/150ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "aji",
+      "condition": "fixed-150/50ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        11.295,
+        11.72
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 122,
+      "dangerClears": 36
+    },
+    {
+      "version": "after",
+      "fish": "aji",
+      "condition": "fixed-150/50ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "aji",
+      "condition": "fixed-200/200ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        15.4,
+        17.395
+      ],
+      "maxTension": 23.2,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "aji",
+      "condition": "fixed-200/200ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "aji",
+      "condition": "fixed-500/50ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        8.03,
+        8.455
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 472,
+      "dangerClears": 18
+    },
+    {
+      "version": "after",
+      "fish": "aji",
+      "condition": "fixed-500/50ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "aji",
+      "condition": "fixed-20/500ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 0,
+      "undecided": 3,
+      "successSeconds": null,
+      "maxTension": 20.28,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "aji",
+      "condition": "fixed-20/500ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 0,
+      "undecided": 3,
+      "successSeconds": null,
+      "maxTension": 20.28,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "aji",
+      "condition": "fixed-500/500ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        16.9,
+        17.26
+      ],
+      "maxTension": 36,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "aji",
+      "condition": "fixed-500/500ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "aji",
+      "condition": "boundary-100/299ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        33.616,
+        33.961
+      ],
+      "maxTension": 21.4,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "aji",
+      "condition": "boundary-100/299ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "aji",
+      "condition": "boundary-100/300ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        31.65,
+        34.255
+      ],
+      "maxTension": 21.4,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "aji",
+      "condition": "boundary-100/300ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "aji",
+      "condition": "boundary-100/301ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        31.729,
+        34.711
+      ],
+      "maxTension": 21.4,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "aji",
+      "condition": "boundary-100/301ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "aji",
+      "condition": "near100-release10ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 3
+    },
+    {
+      "version": "after",
+      "fish": "aji",
+      "condition": "near100-release10ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "iwashi",
+      "condition": "held",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "iwashi",
+      "condition": "held",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "iwashi",
+      "condition": "adaptive-0ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        8.665,
+        9.09
+      ],
+      "maxTension": 49.9,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "iwashi",
+      "condition": "adaptive-0ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        8.665,
+        9.09
+      ],
+      "maxTension": 49.9,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "iwashi",
+      "condition": "adaptive-150ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        8.98,
+        9.405
+      ],
+      "maxTension": 46.75,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "iwashi",
+      "condition": "adaptive-150ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        8.98,
+        9.405
+      ],
+      "maxTension": 50.95,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "iwashi",
+      "condition": "adaptive-200ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        9.085,
+        9.51
+      ],
+      "maxTension": 45.7,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "iwashi",
+      "condition": "adaptive-200ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        9.085,
+        9.51
+      ],
+      "maxTension": 51.3,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "iwashi",
+      "condition": "adaptive-250ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        9.19,
+        9.615
+      ],
+      "maxTension": 44.65,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "iwashi",
+      "condition": "adaptive-250ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        9.19,
+        9.615
+      ],
+      "maxTension": 51.65,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "iwashi",
+      "condition": "fixed-50/50ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        13.83,
+        14.245
+      ],
+      "maxTension": 20.65,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "iwashi",
+      "condition": "fixed-50/50ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "iwashi",
+      "condition": "fixed-100/100ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        13.85,
+        14.25
+      ],
+      "maxTension": 21.3,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "iwashi",
+      "condition": "fixed-100/100ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "iwashi",
+      "condition": "fixed-50/150ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        27.65,
+        28.44
+      ],
+      "maxTension": 20.65,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "iwashi",
+      "condition": "fixed-50/150ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "iwashi",
+      "condition": "fixed-150/50ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        9.205,
+        9.57
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 122,
+      "dangerClears": 17
+    },
+    {
+      "version": "after",
+      "fish": "iwashi",
+      "condition": "fixed-150/50ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "iwashi",
+      "condition": "fixed-200/200ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        13.73,
+        14.165
+      ],
+      "maxTension": 22.6,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "iwashi",
+      "condition": "fixed-200/200ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "iwashi",
+      "condition": "fixed-500/50ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        6.785,
+        8.515
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 472,
+      "dangerClears": 14
+    },
+    {
+      "version": "after",
+      "fish": "iwashi",
+      "condition": "fixed-500/50ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "iwashi",
+      "condition": "fixed-20/500ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 0,
+      "undecided": 3,
+      "successSeconds": null,
+      "maxTension": 20.26,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "iwashi",
+      "condition": "fixed-20/500ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 0,
+      "undecided": 3,
+      "successSeconds": null,
+      "maxTension": 20.26,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "iwashi",
+      "condition": "fixed-500/500ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        13.45,
+        13.835
+      ],
+      "maxTension": 26.5,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "iwashi",
+      "condition": "fixed-500/500ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        14.475,
+        14.855
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 290.676,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "iwashi",
+      "condition": "boundary-100/299ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        27.571,
+        28.37
+      ],
+      "maxTension": 21.3,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "iwashi",
+      "condition": "boundary-100/299ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "iwashi",
+      "condition": "boundary-100/300ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        27.65,
+        28.08
+      ],
+      "maxTension": 21.3,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "iwashi",
+      "condition": "boundary-100/300ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "iwashi",
+      "condition": "boundary-100/301ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        27.538,
+        28.154
+      ],
+      "maxTension": 21.3,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "iwashi",
+      "condition": "boundary-100/301ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "iwashi",
+      "condition": "near100-release10ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 3
+    },
+    {
+      "version": "after",
+      "fish": "iwashi",
+      "condition": "near100-release10ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "saba",
+      "condition": "held",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "saba",
+      "condition": "held",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "saba",
+      "condition": "adaptive-0ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        10.365,
+        10.79
+      ],
+      "maxTension": 49,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "saba",
+      "condition": "adaptive-0ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        10.365,
+        10.79
+      ],
+      "maxTension": 49,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "saba",
+      "condition": "adaptive-150ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        10.765,
+        12.97
+      ],
+      "maxTension": 45.55,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "saba",
+      "condition": "adaptive-150ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        10.765,
+        12.97
+      ],
+      "maxTension": 49.75,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "saba",
+      "condition": "adaptive-200ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        10.895,
+        13.13
+      ],
+      "maxTension": 44.4,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "saba",
+      "condition": "adaptive-200ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        10.895,
+        13.13
+      ],
+      "maxTension": 50,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "saba",
+      "condition": "adaptive-250ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        12.865,
+        13.29
+      ],
+      "maxTension": 43.25,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "saba",
+      "condition": "adaptive-250ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        12.865,
+        13.29
+      ],
+      "maxTension": 50.25,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "saba",
+      "condition": "fixed-50/50ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        16.645,
+        17.07
+      ],
+      "maxTension": 53.7,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "saba",
+      "condition": "fixed-50/50ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "saba",
+      "condition": "fixed-100/100ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        16.645,
+        17.095
+      ],
+      "maxTension": 55.1,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "saba",
+      "condition": "fixed-100/100ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "saba",
+      "condition": "fixed-50/150ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        33.83,
+        35.05
+      ],
+      "maxTension": 21,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "saba",
+      "condition": "fixed-50/150ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "saba",
+      "condition": "fixed-150/50ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        10.71,
+        11.36
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 125.862,
+      "dangerClears": 79
+    },
+    {
+      "version": "after",
+      "fish": "saba",
+      "condition": "fixed-150/50ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "saba",
+      "condition": "fixed-200/200ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        16.545,
+        17.015
+      ],
+      "maxTension": 57.1,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "saba",
+      "condition": "fixed-200/200ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "saba",
+      "condition": "fixed-500/50ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        9.48,
+        9.9
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 475.862,
+      "dangerClears": 35
+    },
+    {
+      "version": "after",
+      "fish": "saba",
+      "condition": "fixed-500/50ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "saba",
+      "condition": "fixed-20/500ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 0,
+      "undecided": 3,
+      "successSeconds": null,
+      "maxTension": 20.4,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "saba",
+      "condition": "fixed-20/500ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 0,
+      "undecided": 3,
+      "successSeconds": null,
+      "maxTension": 20.4,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "saba",
+      "condition": "fixed-500/500ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        16.42,
+        16.63
+      ],
+      "maxTension": 66.25,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "saba",
+      "condition": "fixed-500/500ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "saba",
+      "condition": "boundary-100/299ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        33.521,
+        34.759
+      ],
+      "maxTension": 22,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "saba",
+      "condition": "boundary-100/299ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "saba",
+      "condition": "boundary-100/300ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        32.9,
+        35.015
+      ],
+      "maxTension": 22,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "saba",
+      "condition": "boundary-100/300ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "saba",
+      "condition": "boundary-100/301ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        32.957,
+        35.072
+      ],
+      "maxTension": 22,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "saba",
+      "condition": "boundary-100/301ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "saba",
+      "condition": "near100-release10ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 3
+    },
+    {
+      "version": "after",
+      "fish": "saba",
+      "condition": "near100-release10ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "tai",
+      "condition": "held",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "tai",
+      "condition": "held",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "tai",
+      "condition": "adaptive-0ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        14.945,
+        15.37
+      ],
+      "maxTension": 62,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "tai",
+      "condition": "adaptive-0ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        14.945,
+        15.37
+      ],
+      "maxTension": 62,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "tai",
+      "condition": "adaptive-150ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        15.345,
+        15.77
+      ],
+      "maxTension": 58.85,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "tai",
+      "condition": "adaptive-150ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        15.345,
+        15.77
+      ],
+      "maxTension": 63.05,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "tai",
+      "condition": "adaptive-200ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        15.475,
+        18.61
+      ],
+      "maxTension": 57.8,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "tai",
+      "condition": "adaptive-200ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        15.475,
+        18.61
+      ],
+      "maxTension": 63.4,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "tai",
+      "condition": "adaptive-250ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        15.61,
+        18.77
+      ],
+      "maxTension": 56.75,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "tai",
+      "condition": "adaptive-250ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        15.61,
+        18.77
+      ],
+      "maxTension": 63.75,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "tai",
+      "condition": "fixed-50/50ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        24.04,
+        24.465
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 28.462,
+      "dangerClears": 52
+    },
+    {
+      "version": "after",
+      "fish": "tai",
+      "condition": "fixed-50/50ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "tai",
+      "condition": "fixed-100/100ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        24.04,
+        24.465
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 56.923,
+      "dangerClears": 30
+    },
+    {
+      "version": "after",
+      "fish": "tai",
+      "condition": "fixed-100/100ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "tai",
+      "condition": "fixed-50/150ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        48.235,
+        49.84
+      ],
+      "maxTension": 21.05,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "tai",
+      "condition": "fixed-50/150ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "tai",
+      "condition": "fixed-150/50ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        15.35,
+        15.775
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 128.462,
+      "dangerClears": 168
+    },
+    {
+      "version": "after",
+      "fish": "tai",
+      "condition": "fixed-150/50ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "tai",
+      "condition": "fixed-200/200ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        23.975,
+        24.505
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 113.846,
+      "dangerClears": 17
+    },
+    {
+      "version": "after",
+      "fish": "tai",
+      "condition": "fixed-200/200ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "tai",
+      "condition": "fixed-500/50ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        13.145,
+        14.105
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 478.462,
+      "dangerClears": 53
+    },
+    {
+      "version": "after",
+      "fish": "tai",
+      "condition": "fixed-500/50ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "tai",
+      "condition": "fixed-20/500ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 0,
+      "undecided": 3,
+      "successSeconds": null,
+      "maxTension": 20.42,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "tai",
+      "condition": "fixed-20/500ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 0,
+      "undecided": 3,
+      "successSeconds": null,
+      "maxTension": 20.42,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "tai",
+      "condition": "fixed-500/500ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        24.04,
+        24.465
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 284.615,
+      "dangerClears": 12
+    },
+    {
+      "version": "after",
+      "fish": "tai",
+      "condition": "fixed-500/500ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "tai",
+      "condition": "boundary-100/299ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        47.965,
+        48.799
+      ],
+      "maxTension": 22.1,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "tai",
+      "condition": "boundary-100/299ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "tai",
+      "condition": "boundary-100/300ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        48.085,
+        49.25
+      ],
+      "maxTension": 22.1,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "tai",
+      "condition": "boundary-100/300ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "tai",
+      "condition": "boundary-100/301ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        48.21,
+        49.823
+      ],
+      "maxTension": 22.1,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "tai",
+      "condition": "boundary-100/301ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "tai",
+      "condition": "near100-release10ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 3
+    },
+    {
+      "version": "after",
+      "fish": "tai",
+      "condition": "near100-release10ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "maguro",
+      "condition": "held",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "maguro",
+      "condition": "held",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "maguro",
+      "condition": "adaptive-0ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        21.335,
+        21.76
+      ],
+      "maxTension": 63.2,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "maguro",
+      "condition": "adaptive-0ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        21.335,
+        21.76
+      ],
+      "maxTension": 63.2,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "maguro",
+      "condition": "adaptive-150ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        21.815,
+        25.575
+      ],
+      "maxTension": 59.9,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "maguro",
+      "condition": "adaptive-150ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        21.815,
+        25.575
+      ],
+      "maxTension": 64.1,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "maguro",
+      "condition": "adaptive-200ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        21.975,
+        25.76
+      ],
+      "maxTension": 58.8,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "maguro",
+      "condition": "adaptive-200ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        21.975,
+        25.76
+      ],
+      "maxTension": 64.4,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "maguro",
+      "condition": "adaptive-250ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        25.525,
+        25.95
+      ],
+      "maxTension": 57.7,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "maguro",
+      "condition": "adaptive-250ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        25.525,
+        25.95
+      ],
+      "maxTension": 64.7,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "maguro",
+      "condition": "fixed-50/50ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        31.525,
+        31.95
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 31.333,
+      "dangerClears": 259
+    },
+    {
+      "version": "after",
+      "fish": "maguro",
+      "condition": "fixed-50/50ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "maguro",
+      "condition": "fixed-100/100ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        31.62,
+        31.915
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 62.667,
+      "dangerClears": 139
+    },
+    {
+      "version": "after",
+      "fish": "maguro",
+      "condition": "fixed-100/100ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "maguro",
+      "condition": "fixed-50/150ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        64.835,
+        66.03
+      ],
+      "maxTension": 21.2,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "maguro",
+      "condition": "fixed-50/150ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "maguro",
+      "condition": "fixed-150/50ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        21.025,
+        21.45
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 131.333,
+      "dangerClears": 260
+    },
+    {
+      "version": "after",
+      "fish": "maguro",
+      "condition": "fixed-150/50ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "maguro",
+      "condition": "fixed-200/200ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        31.375,
+        31.8
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 125.333,
+      "dangerClears": 74
+    },
+    {
+      "version": "after",
+      "fish": "maguro",
+      "condition": "fixed-200/200ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "maguro",
+      "condition": "fixed-500/50ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        16.585,
+        17.095
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 481.333,
+      "dangerClears": 75
+    },
+    {
+      "version": "after",
+      "fish": "maguro",
+      "condition": "fixed-500/50ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "maguro",
+      "condition": "fixed-20/500ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 0,
+      "undecided": 3,
+      "successSeconds": null,
+      "maxTension": 20.48,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "maguro",
+      "condition": "fixed-20/500ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 0,
+      "undecided": 3,
+      "successSeconds": null,
+      "maxTension": 20.48,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "maguro",
+      "condition": "fixed-500/500ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        30.63,
+        31.495
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 313.333,
+      "dangerClears": 34
+    },
+    {
+      "version": "after",
+      "fish": "maguro",
+      "condition": "fixed-500/500ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "maguro",
+      "condition": "boundary-100/299ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        63.506,
+        65.906
+      ],
+      "maxTension": 22.4,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "maguro",
+      "condition": "boundary-100/299ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "maguro",
+      "condition": "boundary-100/300ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        64.835,
+        66.03
+      ],
+      "maxTension": 22.4,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "maguro",
+      "condition": "boundary-100/300ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "maguro",
+      "condition": "boundary-100/301ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        64.576,
+        65.954
+      ],
+      "maxTension": 22.4,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "maguro",
+      "condition": "boundary-100/301ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "maguro",
+      "condition": "near100-release10ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 3
+    },
+    {
+      "version": "after",
+      "fish": "maguro",
+      "condition": "near100-release10ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "gold",
+      "condition": "held",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "gold",
+      "condition": "held",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "gold",
+      "condition": "adaptive-0ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        22.095,
+        26.12
+      ],
+      "maxTension": 61.6,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "gold",
+      "condition": "adaptive-0ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        22.095,
+        26.12
+      ],
+      "maxTension": 61.6,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "gold",
+      "condition": "adaptive-150ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        26.255,
+        26.68
+      ],
+      "maxTension": 58.9,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "gold",
+      "condition": "adaptive-150ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        26.255,
+        26.68
+      ],
+      "maxTension": 63.1,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "gold",
+      "condition": "adaptive-200ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        26.445,
+        26.87
+      ],
+      "maxTension": 58,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "gold",
+      "condition": "adaptive-200ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        26.445,
+        26.87
+      ],
+      "maxTension": 63.6,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "gold",
+      "condition": "adaptive-250ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        26.63,
+        27.055
+      ],
+      "maxTension": 57.1,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "gold",
+      "condition": "adaptive-250ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        26.63,
+        27.055
+      ],
+      "maxTension": 64.1,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "gold",
+      "condition": "fixed-50/50ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        32.01,
+        32.435
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 33.529,
+      "dangerClears": 452
+    },
+    {
+      "version": "after",
+      "fish": "gold",
+      "condition": "fixed-50/50ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "gold",
+      "condition": "fixed-100/100ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        32.01,
+        32.435
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 67.059,
+      "dangerClears": 230
+    },
+    {
+      "version": "after",
+      "fish": "gold",
+      "condition": "fixed-100/100ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "gold",
+      "condition": "fixed-50/150ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        64.02,
+        64.87
+      ],
+      "maxTension": 21.3,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "gold",
+      "condition": "fixed-50/150ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "gold",
+      "condition": "fixed-150/50ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        21.31,
+        21.735
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 133.529,
+      "dangerClears": 269
+    },
+    {
+      "version": "after",
+      "fish": "gold",
+      "condition": "fixed-150/50ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "gold",
+      "condition": "fixed-200/200ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        32.01,
+        32.435
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 134.118,
+      "dangerClears": 115
+    },
+    {
+      "version": "after",
+      "fish": "gold",
+      "condition": "fixed-200/200ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "gold",
+      "condition": "fixed-500/50ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        16.765,
+        17.2
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 483.529,
+      "dangerClears": 75
+    },
+    {
+      "version": "after",
+      "fish": "gold",
+      "condition": "fixed-500/50ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "gold",
+      "condition": "fixed-20/500ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 0,
+      "undecided": 3,
+      "successSeconds": null,
+      "maxTension": 20.52,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "gold",
+      "condition": "fixed-20/500ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 0,
+      "undecided": 3,
+      "successSeconds": null,
+      "maxTension": 20.52,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "gold",
+      "condition": "fixed-500/500ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        31.455,
+        31.925
+      ],
+      "maxTension": 100,
+      "dangerPeakMs": 335.294,
+      "dangerClears": 55
+    },
+    {
+      "version": "after",
+      "fish": "gold",
+      "condition": "fixed-500/500ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "gold",
+      "condition": "boundary-100/299ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        63.905,
+        64.699
+      ],
+      "maxTension": 22.6,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "gold",
+      "condition": "boundary-100/299ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "gold",
+      "condition": "boundary-100/300ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        64.02,
+        64.87
+      ],
+      "maxTension": 22.6,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "gold",
+      "condition": "boundary-100/300ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "gold",
+      "condition": "boundary-100/301ms",
+      "runs": 3,
+      "success": 3,
+      "lineBreak": 0,
+      "undecided": 0,
+      "successSeconds": [
+        64.18,
+        65.031
+      ],
+      "maxTension": 22.6,
+      "dangerPeakMs": 0,
+      "dangerClears": 0
+    },
+    {
+      "version": "after",
+      "fish": "gold",
+      "condition": "boundary-100/301ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    },
+    {
+      "version": "before",
+      "fish": "gold",
+      "condition": "near100-release10ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 3
+    },
+    {
+      "version": "after",
+      "fish": "gold",
+      "condition": "near100-release10ms",
+      "runs": 3,
+      "success": 0,
+      "lineBreak": 3,
+      "undecided": 0,
+      "successSeconds": null,
+      "maxTension": 100,
+      "dangerPeakMs": 900,
+      "dangerClears": 0
+    }
+  ],
+  "acceptance": {
+    "allSpeciesAdaptive0_150_200_250ms": "passed",
+    "sixFastRhythmsNoRecoveryExploit": "passed",
+    "briefReleaseRetainsDanger": "passed",
+    "fishProbabilitiesAndScoresUnchanged": "passed"
+  },
+  "representativeDangerTraces": [
+    {
+      "version": "before",
+      "condition": "fixed-500/50ms",
+      "outcome": "success",
+      "trace": [
+        {
+          "elapsedMs": 2925,
+          "event": "start",
+          "fishState": "struggling",
+          "input": "winding",
+          "tension": 100,
+          "dangerMs": 5
+        },
+        {
+          "elapsedMs": 3220,
+          "event": "300ms",
+          "fishState": "struggling",
+          "input": "winding",
+          "tension": 100,
+          "dangerMs": 300
+        },
+        {
+          "elapsedMs": 3250,
+          "event": "release",
+          "fishState": "struggling",
+          "input": "resting",
+          "tension": 100,
+          "dangerMs": 330
+        },
+        {
+          "elapsedMs": 3255,
+          "event": "clear",
+          "fishState": "struggling",
+          "input": "resting",
+          "tension": 99.86,
+          "dangerMs": 0
+        },
+        {
+          "elapsedMs": 3300,
+          "event": "press",
+          "fishState": "struggling",
+          "input": "winding",
+          "tension": 98.6,
+          "dangerMs": 0
+        },
+        {
+          "elapsedMs": 3320,
+          "event": "start",
+          "fishState": "struggling",
+          "input": "winding",
+          "tension": 100,
+          "dangerMs": 3.529
+        },
+        {
+          "elapsedMs": 3620,
+          "event": "300ms",
+          "fishState": "struggling",
+          "input": "winding",
+          "tension": 100,
+          "dangerMs": 303.529
+        },
+        {
+          "elapsedMs": 3800,
+          "event": "release",
+          "fishState": "struggling",
+          "input": "resting",
+          "tension": 100,
+          "dangerMs": 483.529
+        },
+        {
+          "elapsedMs": 16765,
+          "event": "success",
+          "fishState": "ended",
+          "input": "resting",
+          "tension": 100,
+          "dangerMs": 206.462
+        }
+      ]
+    },
+    {
+      "version": "before",
+      "condition": "near100-release10ms",
+      "outcome": "line-break",
+      "trace": [
+        {
+          "elapsedMs": 2670,
+          "event": "start",
+          "fishState": "warning",
+          "input": "winding",
+          "tension": 100,
+          "dangerMs": 3.333
+        },
+        {
+          "elapsedMs": 2970,
+          "event": "300ms",
+          "fishState": "struggling",
+          "input": "winding",
+          "tension": 100,
+          "dangerMs": 303.333
+        },
+        {
+          "elapsedMs": 3270,
+          "event": "600ms",
+          "fishState": "struggling",
+          "input": "winding",
+          "tension": 100,
+          "dangerMs": 603.333
+        },
+        {
+          "elapsedMs": 3370,
+          "event": "release",
+          "fishState": "struggling",
+          "input": "resting",
+          "tension": 100,
+          "dangerMs": 703.333
+        },
+        {
+          "elapsedMs": 3375,
+          "event": "clear",
+          "fishState": "struggling",
+          "input": "resting",
+          "tension": 99.86,
+          "dangerMs": 0
+        },
+        {
+          "elapsedMs": 3380,
+          "event": "after10ms",
+          "fishState": "struggling",
+          "input": "resting",
+          "tension": 99.72,
+          "dangerMs": 0
+        },
+        {
+          "elapsedMs": 3380,
+          "event": "press",
+          "fishState": "struggling",
+          "input": "winding",
+          "tension": 99.72,
+          "dangerMs": 0
+        },
+        {
+          "elapsedMs": 3385,
+          "event": "start",
+          "fishState": "struggling",
+          "input": "winding",
+          "tension": 100,
+          "dangerMs": 1.706
+        },
+        {
+          "elapsedMs": 4285,
+          "event": "line-break",
+          "fishState": "ended",
+          "input": "resting",
+          "tension": 100,
+          "dangerMs": 900
+        }
+      ]
+    },
+    {
+      "version": "after",
+      "condition": "fixed-500/50ms",
+      "outcome": "line-break",
+      "trace": [
+        {
+          "elapsedMs": 2840,
+          "event": "start",
+          "fishState": "struggling",
+          "input": "winding",
+          "tension": 100,
+          "dangerMs": 2.353
+        },
+        {
+          "elapsedMs": 3140,
+          "event": "300ms",
+          "fishState": "struggling",
+          "input": "winding",
+          "tension": 100,
+          "dangerMs": 302.353
+        },
+        {
+          "elapsedMs": 3250,
+          "event": "release",
+          "fishState": "struggling",
+          "input": "resting",
+          "tension": 100,
+          "dangerMs": 412.353
+        },
+        {
+          "elapsedMs": 3300,
+          "event": "press",
+          "fishState": "struggling",
+          "input": "winding",
+          "tension": 100,
+          "dangerMs": 412.353
+        },
+        {
+          "elapsedMs": 3490,
+          "event": "600ms",
+          "fishState": "struggling",
+          "input": "winding",
+          "tension": 100,
+          "dangerMs": 602.353
+        },
+        {
+          "elapsedMs": 3790,
+          "event": "line-break",
+          "fishState": "ended",
+          "input": "resting",
+          "tension": 100,
+          "dangerMs": 900
+        }
+      ]
+    },
+    {
+      "version": "after",
+      "condition": "near100-release10ms",
+      "outcome": "line-break",
+      "trace": [
+        {
+          "elapsedMs": 2670,
+          "event": "start",
+          "fishState": "warning",
+          "input": "winding",
+          "tension": 100,
+          "dangerMs": 3.333
+        },
+        {
+          "elapsedMs": 2970,
+          "event": "300ms",
+          "fishState": "struggling",
+          "input": "winding",
+          "tension": 100,
+          "dangerMs": 303.333
+        },
+        {
+          "elapsedMs": 3270,
+          "event": "600ms",
+          "fishState": "struggling",
+          "input": "winding",
+          "tension": 100,
+          "dangerMs": 603.333
+        },
+        {
+          "elapsedMs": 3370,
+          "event": "release",
+          "fishState": "struggling",
+          "input": "resting",
+          "tension": 100,
+          "dangerMs": 703.333
+        },
+        {
+          "elapsedMs": 3380,
+          "event": "after10ms",
+          "fishState": "struggling",
+          "input": "resting",
+          "tension": 100,
+          "dangerMs": 703.333
+        },
+        {
+          "elapsedMs": 3380,
+          "event": "press",
+          "fishState": "struggling",
+          "input": "winding",
+          "tension": 100,
+          "dangerMs": 703.333
+        },
+        {
+          "elapsedMs": 3580,
+          "event": "line-break",
+          "fishState": "ended",
+          "input": "resting",
+          "tension": 100,
+          "dangerMs": 900
+        }
+      ]
+    }
+  ]
+}

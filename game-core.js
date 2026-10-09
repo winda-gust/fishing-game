@@ -17,6 +17,8 @@
     maxTension: 100,
     initialTension: 20,
     restRelief: 28,
+    restDelayMs: 300,
+    safeTension: 70,
     waitingMinMs: 900,
     waitingMaxMs: 1500,
     nibbleMinMs: 250,
@@ -25,19 +27,18 @@
     gapMaxMs: 750,
     minBiteDelayMs: 2000,
     warningProgressFactor: 0.45,
-    struggleProgressFactor: 0.12,
   });
 
   const FISH_BEHAVIORS = Object.freeze(Object.fromEntries([
-    ["aji",    [3000, 1000, 1600, 18, 14, 22, 50, "穏やかな引き", 0.85]],
-    ["iwashi", [2300, 850, 1100, 21, 13, 20, 50, "軽快な引き", 0.8]],
-    ["saba",   [1450, 800, 900, 19, 20, 25, 58, "小刻みな引き", 1]],
-    ["tai",    [2000, 1000, 1600, 14, 21, 28, 65, "力強い引き", 1.1]],
-    ["maguro", [1800, 1150, 2100, 12, 24, 30, 75, "重い引き", 1.25]],
-    ["gold",   [1600, 1200, 2400, 13, 26, 36, 85, "とても強い引き", 1.3]],
+    ["aji",    [3000, 1000, 1600, 18, 14, 22, 50, "穏やかな引き", 0.85, 4]],
+    ["iwashi", [2300, 850, 1100, 21, 13, 20, 50, "軽快な引き", 0.8, 4]],
+    ["saba",   [1450, 800, 900, 19, 20, 25, 58, "小刻みな引き", 1, 5]],
+    ["tai",    [2000, 1000, 1600, 14, 21, 28, 65, "力強い引き", 1.1, 5]],
+    ["maguro", [1800, 1150, 2100, 12, 24, 30, 75, "重い引き", 1.25, 6]],
+    ["gold",   [1600, 1200, 2400, 13, 26, 36, 85, "とても強い引き", 1.3, 7]],
   ].map(([id, values]) => [id, Object.freeze(Object.fromEntries([
     "calmMs", "warningMs", "struggleMs", "progressRate", "tensionCalm",
-    "tensionWarning", "tensionStruggle", "pullHint", "shadowScale",
+    "tensionWarning", "tensionStruggle", "pullHint", "shadowScale", "regressionRate",
   ].map((key, index) => [key, values[index]])))])));
 
   const TOTAL_WEIGHT = FISHES.reduce((total, fish) => total + fish.weight, 0);
@@ -58,6 +59,7 @@
     #progress = 0;
     #tension = 0;
     #overloadMs = 0;
+    #restElapsedMs = 0;
     #phaseRemainingMs = 0;
     #fishStateIndex = 0;
     #fishStateRemainingMs = 0;
@@ -118,6 +120,7 @@
       this.#progress = 0;
       this.#tension = 0;
       this.#overloadMs = 0;
+      this.#restElapsedMs = 0;
       this.#failureReason = null;
       this.#armed = false;
     }
@@ -146,12 +149,16 @@
         this.#fishStateIndex = 0;
         this.#fishStateRemainingMs = this.#behavior.calmMs;
         this.#armed = false;
+      } else if (this.#phase === "reeling" && this.#armed) {
+        // Only actual winding restarts the continuous-release requirement.
+        this.#restElapsedMs = 0;
       }
       return true;
     }
 
     release() {
       const wasHeld = this.#isHeld;
+      if (!wasHeld) return false;
       this.#isHeld = false;
       if (this.#phase === "reeling") this.#armed = true;
       return wasHeld;
@@ -181,6 +188,7 @@
       this.#fishStateRemainingMs = 0;
       this.#failureReason = reason;
       this.#armed = false;
+      this.#restElapsedMs = 0;
       if (phase === "success") {
         this.#catches.push(this.#fish);
         this.#totalScore += this.#fish.points;
@@ -198,31 +206,44 @@
     #advanceReeling(remainingMs) {
       const behavior = this.#behavior;
       const winding = this.#isReeling;
-      // Rest has no escape timer. Whole cycles at zero tension can be skipped safely.
+      // A held hook/resume is neutral, never a free rest. Pause preserves rest time.
+      const resting = !this.#isHeld;
+      const recovering = resting && this.#restElapsedMs >= CONFIG.restDelayMs;
+      // No escape timer: cycles without changing gauges/timers can be skipped safely.
       const cycleMs = behavior.calmMs + behavior.warningMs + behavior.struggleMs;
-      if (!winding && this.#tension === 0 && remainingMs >= cycleMs) {
+      if (!winding && (!resting || (recovering && this.#tension === 0 && this.#overloadMs === 0)) && remainingMs >= cycleMs) {
         remainingMs %= cycleMs;
         if (remainingMs === 0) return 0;
       }
-      const progressRate = winding ? behavior.progressRate * [
-        1, CONFIG.warningProgressFactor, CONFIG.struggleProgressFactor,
+      const progressRate = winding ? [
+        behavior.progressRate, behavior.progressRate * CONFIG.warningProgressFactor,
+        this.#progress > 0 ? -behavior.regressionRate : 0,
       ][this.#fishStateIndex] : 0;
       const tensionRate = winding ? [
         behavior.tensionCalm, behavior.tensionWarning, behavior.tensionStruggle,
-      ][this.#fishStateIndex] : -CONFIG.restRelief;
-      const successTime = progressRate > 0
-        ? (CONFIG.maxProgress - this.#progress) * 1000 / progressRate : Infinity;
+      ][this.#fishStateIndex] : recovering ? -CONFIG.restRelief : 0;
+      const progressTime = progressRate > 0 ? (CONFIG.maxProgress - this.#progress) * 1000 / progressRate
+        : progressRate < 0 ? this.#progress * 1000 / -progressRate : Infinity;
       const tensionTime = winding
         ? (this.#tension < CONFIG.maxTension ? (CONFIG.maxTension - this.#tension) * 1000 / tensionRate : Infinity)
-        : (this.#tension > 0 ? this.#tension * 1000 / CONFIG.restRelief : Infinity);
+        : (recovering && this.#tension > 0 ? this.#tension * 1000 / CONFIG.restRelief : Infinity);
+      const restDelayTime = resting && !recovering ? CONFIG.restDelayMs - this.#restElapsedMs : Infinity;
+      const safeTime = recovering && this.#overloadMs > 0 && this.#tension > CONFIG.safeTension
+        ? (this.#tension - CONFIG.safeTension) * 1000 / CONFIG.restRelief : Infinity;
       const overloaded = winding && this.#tension >= CONFIG.maxTension;
       const breakTime = overloaded ? CONFIG.breakGraceMs - this.#overloadMs : Infinity;
-      const step = Math.min(remainingMs, this.#fishStateRemainingMs, successTime, tensionTime, breakTime);
+      const step = Math.min(remainingMs, this.#fishStateRemainingMs, progressTime, tensionTime, restDelayTime, safeTime, breakTime);
       const reached = (time) => Number.isFinite(time) && time - step <= EVENT_EPSILON_MS;
-      this.#progress = reached(successTime) ? CONFIG.maxProgress : Math.min(CONFIG.maxProgress, this.#progress + progressRate * step / 1000);
+      this.#progress = reached(progressTime) ? (progressRate > 0 ? CONFIG.maxProgress : 0)
+        : Math.max(0, Math.min(CONFIG.maxProgress, this.#progress + progressRate * step / 1000));
       this.#tension = reached(tensionTime) ? (winding ? CONFIG.maxTension : 0)
         : Math.max(0, Math.min(CONFIG.maxTension, this.#tension + tensionRate * step / 1000));
-      if (!winding && step > 0) {
+      if (reached(safeTime)) this.#tension = CONFIG.safeTension;
+      if (resting) {
+        this.#restElapsedMs = reached(restDelayTime) ? CONFIG.restDelayMs
+          : Math.min(CONFIG.restDelayMs, this.#restElapsedMs + step);
+      }
+      if (recovering && step > 0 && this.#tension <= CONFIG.safeTension) {
         this.#overloadMs = 0;
       } else if (overloaded) {
         this.#overloadMs = reached(breakTime) ? CONFIG.breakGraceMs : this.#overloadMs + step;
@@ -231,7 +252,7 @@
       const unconsumed = step === remainingMs ? 0 : remainingMs - step;
       // A line break wins if both terminal boundaries occur at the same instant.
       if (reached(breakTime)) this.#finish("failure", "line");
-      else if (reached(successTime)) this.#finish("success");
+      else if (progressRate > 0 && reached(progressTime)) this.#finish("success");
       else if (this.#fishStateRemainingMs === 0) this.#advanceFishState();
       return unconsumed;
     }
@@ -271,6 +292,7 @@
       this.#progress = 0;
       this.#tension = 0;
       this.#overloadMs = 0;
+      this.#restElapsedMs = 0;
       this.#phaseRemainingMs = 0;
       this.#fishStateIndex = 0;
       this.#fishStateRemainingMs = 0;
@@ -292,6 +314,8 @@
         progress: rounded(this.#progress),
         tension: rounded(this.#tension),
         overloadMs: rounded(this.#overloadMs),
+        restElapsedMs: fighting ? rounded(this.#restElapsedMs) : 0,
+        restRemainingMs: fighting ? rounded(CONFIG.restDelayMs - this.#restElapsedMs) : 0,
         biteRemainingMs: visiblePhase === "biting" ? rounded(this.#phaseRemainingMs) : 0,
         phaseRemainingMs: rounded(this.#phaseRemainingMs),
         fishState: fighting ? FISH_STATES[this.#fishStateIndex] : null,

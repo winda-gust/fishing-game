@@ -108,6 +108,11 @@ async function readState(page) {
     score: document.getElementById("total-score").textContent,
     count: document.getElementById("catch-count").textContent,
     label: document.getElementById("fish-button-label").textContent,
+    restState: document.getElementById("rest-status").dataset.state,
+    restText: document.getElementById("rest-status").textContent,
+    restCountdown: document.getElementById("rest-countdown").textContent,
+    graceText: document.getElementById("tension-grace").textContent,
+    warning: document.getElementById("tension-warning").textContent,
   }));
 }
 
@@ -166,7 +171,7 @@ async function reelSafely(page) {
       return;
     }
     assert.equal(state.phase, "reeling", `安全な巻き方で失敗しないこと: ${JSON.stringify(state)}`);
-    const shouldHold = state.fishState === "calm" && state.tension < 75;
+    const shouldHold = state.fishState === "calm" && state.tension < 75 && state.graceText === "";
     if (shouldHold && !held) {
       await mouseDown(page);
       held = true;
@@ -352,10 +357,13 @@ test("holding the cast cannot auto-hook, and holding the hook cannot auto-reel",
   await mouseDown(page);
   assert.equal((await readState(page)).phase, "reeling");
   assert.equal((await readState(page)).label, "一度離してから巻く");
+  assert.equal((await readState(page)).restState, "neutral");
   await page.clock.runFor(500);
   assert.equal((await readState(page)).progress, 0);
+  assert.equal((await readState(page)).tension, 20);
   await page.mouse.up();
   assert.equal((await readState(page)).label, "長押しで巻く");
+  assert.equal((await readState(page)).restState, "waiting");
   await mouseDown(page);
   await page.clock.runFor(200);
   assert.ok((await readState(page)).progress > 0);
@@ -431,7 +439,7 @@ test("calm, warning, and struggling each show distinct visible Japanese feedback
   for (const message of messages) assert.match(message, /[ぁ-んァ-ヶ一-龯]/);
 });
 
-test("releasing at 100% tension recovers before the break grace expires", async (t) => {
+test("100% tension freezes danger on release, recovers only after continuous rest, and clears danger at the safe threshold", async (t) => {
   const page = await openGame(t, { sample: 0.99 });
   await hook(page);
   await mouseDown(page);
@@ -441,9 +449,24 @@ test("releasing at 100% tension recovers before the break grace expires", async 
   assert.equal(await page.locator("#tension-warning").isVisible(), true);
   await assertGauges(page);
   await page.mouse.up();
-  await page.clock.runFor(300);
+  const atRelease = await readState(page);
+  assert.equal(atRelease.restState, "waiting");
+  assert.match(atRelease.restText, /休|回復/);
+  assert.match(atRelease.graceText, /残り猶予/);
+  await page.clock.runFor(299);
   assert.equal((await readState(page)).phase, "reeling");
-  assert.ok((await readState(page)).tension < 100);
+  assert.equal((await readState(page)).tension, 100);
+  assert.equal((await readState(page)).graceText, atRelease.graceText);
+  assert.equal((await readState(page)).restState, "waiting");
+  await page.clock.runFor(51);
+  const partial = await readState(page);
+  assert.equal(partial.restState, "recovering");
+  // Only time beyond the delay recovers tension; rendering may lag by one animation frame.
+  assert.ok(partial.tension >= 98 && partial.tension <= 99);
+  assert.equal(partial.graceText, atRelease.graceText);
+  assert.match(partial.warning, /危険.*70%|70%.*危険/);
+  const safe = await advanceUntil(page, (state) => state.graceText === "", { maxMs: 2000, step: 20 });
+  assert.ok(safe.tension <= 70);
   await reelSafely(page);
   assert.equal((await readState(page)).score, "300");
 });
@@ -458,7 +481,10 @@ test("mouse release outside the button stops reeling and relieves tension", asyn
   await page.mouse.move(2, 2);
   await page.mouse.up();
   const atRelease = await readState(page);
-  await page.clock.runFor(300);
+  await page.clock.runFor(299);
+  assert.equal((await readState(page)).tension, atRelease.tension);
+  assert.equal((await readState(page)).restState, "waiting");
+  await page.clock.runFor(151);
   const released = await readState(page);
   assert.ok(atRelease.progress >= held.progress);
   assert.equal(released.progress, atRelease.progress);
@@ -481,7 +507,10 @@ for (const eventType of ["pointercancel", "lostpointercapture", "blur"]) {
       }));
     }, eventType);
     const atRelease = await readState(page);
-    await page.clock.runFor(300);
+    await page.clock.runFor(299);
+    assert.equal((await readState(page)).tension, atRelease.tension);
+    if (eventType !== "blur") assert.equal((await readState(page)).restState, "waiting");
+    await page.clock.runFor(151);
     const after = await readState(page);
     assert.ok(atRelease.progress >= before.progress);
     assert.equal(after.progress, atRelease.progress);
@@ -518,6 +547,8 @@ test("Space/Enter repeats and simultaneous keys cannot hook or wind without a fr
   await page.keyboard.down("Space");
   await page.clock.runFor(300);
   assert.equal((await readState(page)).progress, 0);
+  assert.equal((await readState(page)).tension, 20);
+  assert.equal((await readState(page)).restState, "neutral");
   await page.keyboard.up("Space");
   await page.keyboard.up("Enter");
   await page.keyboard.down("Space");
@@ -529,7 +560,9 @@ test("Space/Enter repeats and simultaneous keys cannot hook or wind without a fr
   assert.equal((await readState(page)).label, "巻いています…");
   await page.keyboard.up("Space");
   const released = await readState(page);
-  await page.clock.runFor(200);
+  await page.clock.runFor(299);
+  assert.equal((await readState(page)).tension, released.tension);
+  assert.equal((await readState(page)).restState, "waiting");
   assert.equal((await readState(page)).progress, released.progress);
   assert.equal((await readState(page)).label, "長押しで巻く");
   await reelSafely(page);
@@ -546,7 +579,10 @@ test("keyboard focus loss and keyup outside the main button release reeling", as
   await page.locator("#reset-button").focus();
   await page.keyboard.up("Enter");
   const atRelease = await readState(page);
-  await page.clock.runFor(300);
+  await page.clock.runFor(299);
+  assert.equal((await readState(page)).tension, atRelease.tension);
+  assert.equal((await readState(page)).restState, "waiting");
+  await page.clock.runFor(151);
   const released = await readState(page);
   assert.ok(atRelease.progress >= held.progress);
   assert.equal(released.progress, atRelease.progress);
@@ -639,6 +675,9 @@ for (const phase of ["waiting", "nibbling", "biting", "reeling", "overload", "su
     await assertGauges(page);
     assert.equal((await readState(page)).progress, 0);
     assert.equal((await readState(page)).tension, 0);
+    assert.equal((await readState(page)).restState, "inactive");
+    assert.equal((await readState(page)).restCountdown, "");
+    assert.equal((await readState(page)).graceText, "");
     if (phase === "paused") await simulateVisibility(page, false);
     await page.clock.runFor(10000);
     assert.equal((await readState(page)).phase, "idle");
@@ -704,10 +743,13 @@ for (const width of [375, 320]) {
     await pressButton(page);
     await mouseDown(page);
     await advanceUntil(page, (state) => state.tension === 100, { step: 20 });
+    await page.clock.runFor(200);
+    assert.equal((await readState(page)).phase, "reeling");
     assert.equal(await page.locator("#tension-warning").isVisible(), true);
+    assert.match((await readState(page)).graceText, /残り猶予/);
     await assertNoOverflow(page);
     await assertGauges(page);
-    const boxes = await Promise.all(["#fish-button", "#catch-progress", "#line-tension", "#tension-warning"].map((selector) => page.locator(selector).boundingBox()));
+    const boxes = await Promise.all(["#fish-button", "#catch-progress", "#line-tension", "#tension-warning", "#rest-status", "#tension-grace"].map((selector) => page.locator(selector).boundingBox()));
     for (const box of boxes) {
       assert.ok(box && box.x >= 0 && box.x + box.width <= width);
       assert.ok(box.y >= 0 && box.y + box.height <= 812, "巻くボタンとゲージを同時に表示すること");
@@ -723,6 +765,237 @@ for (const width of [375, 320]) {
     await assertNoOverflow(page);
     await screenshot(page, `fishing-game-mobile-${width}.png`);
     await page.locator("#reset-button").click();
+    await assertEmpty(page);
+  });
+}
+
+async function inputDriver(page, type) {
+  if (type === "mouse") return { down: () => mouseDown(page), up: () => page.mouse.up(), close: async () => {} };
+  if (type === "Space" || type === "Enter") return {
+    down: async () => {
+      await page.locator("#fish-button").focus();
+      await page.keyboard.down(type);
+    },
+    up: () => page.keyboard.up(type),
+    close: async () => {},
+  };
+  const session = await page.context().newCDPSession(page);
+  return {
+    down: async () => {
+      const point = await buttonPoint(page);
+      await session.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ ...point, id: 1 }] });
+    },
+    up: () => session.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] }),
+    close: () => session.detach(),
+  };
+}
+
+for (const type of ["mouse", "touch", "Space", "Enter"]) {
+  test(`${type}: legitimate 50/50ms taps wind for their actual duration but never combine short rests into recovery`, async (t) => {
+    const page = await openGame(t, type === "touch" ? { touch: true, viewport: { width: 375, height: 812 } } : {});
+    const input = await inputDriver(page, type);
+    await hook(page);
+    const start = await readState(page);
+    for (let index = 0; index < 10; index += 1) {
+      await input.down();
+      assert.equal((await readState(page)).restState, "held");
+      await page.clock.runFor(50);
+      await input.up();
+      const atRelease = await readState(page);
+      assert.equal(atRelease.restState, "waiting");
+      assert.match(atRelease.restCountdown, /0\.3/);
+      await page.clock.runFor(50);
+      const shortRest = await readState(page);
+      assert.equal(shortRest.progress, atRelease.progress);
+      assert.equal(shortRest.tension, atRelease.tension);
+      assert.equal(shortRest.restState, "waiting");
+    }
+    const taps = await readState(page);
+    assert.equal(taps.phase, "reeling");
+    assert.ok(taps.progress >= 8 && taps.progress <= 10);
+    assert.ok(taps.tension - start.tension >= 6 && taps.tension - start.tension <= 8);
+    await assertEmpty(page);
+
+    await page.locator("#reset-button").click();
+    await nextFish(page, 0.175);
+    await hook(page);
+    const beforeHold = await readState(page);
+    await input.down();
+    await page.clock.runFor(500);
+    await input.up();
+    const hold = await readState(page);
+    // Both patterns contain 500ms of real winding in the same calm state.
+    assert.ok(Math.abs(hold.progress - taps.progress) <= 1);
+    assert.ok(Math.abs((hold.tension - beforeHold.tension) - (taps.tension - start.tension)) <= 1);
+    await page.clock.runFor(299);
+    assert.equal((await readState(page)).tension, hold.tension);
+    assert.equal((await readState(page)).restState, "waiting");
+    await page.clock.runFor(151);
+    const recovery = await readState(page);
+    assert.equal(recovery.restState, "recovering");
+    assert.equal(recovery.progress, hold.progress);
+    assert.ok(recovery.tension < hold.tension);
+    await input.close();
+  });
+}
+
+async function bankDanger(page) {
+  await hook(page);
+  await mouseDown(page);
+  // アジ reaches 100% tension at 4320ms; 5020ms uses 700 of the 900ms grace.
+  await page.clock.runFor(5020);
+  await page.mouse.up();
+  const state = await readState(page);
+  assert.equal(state.phase, "reeling");
+  assert.equal(state.tension, 100);
+  assert.match(state.graceText, /0\.2秒/);
+  return state;
+}
+
+test("700ms of banked danger survives a short release and partial recovery below 100%, then winding uses the remaining grace", async (t) => {
+  const page = await openGame(t);
+  const danger = await bankDanger(page);
+  await page.clock.runFor(299);
+  assert.equal((await readState(page)).tension, 100);
+  assert.equal((await readState(page)).graceText, danger.graceText);
+  assert.equal((await readState(page)).restState, "waiting");
+  await page.clock.runFor(51);
+  const partial = await readState(page);
+  assert.ok(partial.tension >= 98 && partial.tension <= 99);
+  assert.equal(partial.graceText, danger.graceText);
+  assert.match(partial.warning, /危険.*70%|70%.*危険/);
+  await mouseDown(page);
+  await page.clock.runFor(300);
+  assert.equal((await readState(page)).phase, "failure");
+  await page.mouse.up();
+  await assertEmpty(page);
+});
+
+test("zero-time accessible clicks and duplicate release notifications grant neither recovery nor a fresh danger budget", async (t) => {
+  const page = await openGame(t);
+  const before = await bankDanger(page);
+  await page.evaluate(() => {
+    const button = document.getElementById("fish-button");
+    for (let index = 0; index < 10; index += 1) {
+      document.dispatchEvent(new PointerEvent("pointerup", { bubbles: true, pointerId: 1, pointerType: "mouse", isPrimary: true }));
+      button.dispatchEvent(new PointerEvent("lostpointercapture", { pointerId: 1, pointerType: "mouse", isPrimary: true }));
+      button.click();
+    }
+  });
+  const after = await readState(page);
+  assert.equal(after.progress, before.progress);
+  assert.equal(after.tension, before.tension);
+  assert.equal(after.graceText, before.graceText);
+  assert.equal(after.restState, "waiting");
+  await mouseDown(page);
+  await page.clock.runFor(220);
+  assert.equal((await readState(page)).phase, "failure");
+  await page.mouse.up();
+  await assertEmpty(page);
+});
+
+test("winding during struggle moves progress back over elapsed time, while rest preserves it and zero remains clamped", async (t) => {
+  const page = await openGame(t);
+  await hook(page);
+  await mouseDown(page);
+  await page.clock.runFor(1200);
+  await page.mouse.up();
+  const built = await readState(page);
+  assert.ok(built.progress >= 21 && built.progress <= 22);
+  await advanceUntil(page, (state) => state.fishState === "warning");
+  assert.match(await page.locator("#fish-state").textContent(), /予兆/);
+  await advanceUntil(page, (state) => state.fishState === "struggling");
+  const before = await readState(page);
+  assert.equal(before.progress, built.progress);
+  assert.match(await page.locator("#fish-state").textContent(), /ゲージが戻る/);
+  await mouseDown(page);
+  await page.clock.runFor(1000);
+  await page.mouse.up();
+  const regressed = await readState(page);
+  assert.ok(before.progress - regressed.progress >= 3 && before.progress - regressed.progress <= 5);
+  assert.ok(regressed.tension > before.tension);
+  await page.clock.runFor(800);
+  assert.equal((await readState(page)).progress, regressed.progress);
+  await assertEmpty(page);
+
+  await page.locator("#reset-button").click();
+  await nextFish(page, 0.175);
+  await hook(page);
+  await advanceUntil(page, (state) => state.fishState === "struggling");
+  await mouseDown(page);
+  await page.clock.runFor(400);
+  await page.mouse.up();
+  assert.equal((await readState(page)).progress, 0);
+  await assertGauges(page);
+});
+
+test("pause and a held resume freeze both partially elapsed recovery delay and banked danger", async (t) => {
+  const page = await openGame(t);
+  await bankDanger(page);
+  await page.clock.runFor(200);
+  await simulateVisibility(page, true);
+  const paused = await readState(page);
+  assert.equal(paused.phase, "paused");
+  assert.equal(paused.restState, "paused");
+  assert.match(paused.restCountdown, /0\.1秒/);
+  assert.match(paused.graceText, /0\.2秒/);
+  await page.clock.runFor(5000);
+  const hidden = await readState(page);
+  assert.equal(hidden.tension, paused.tension);
+  assert.equal(hidden.progress, paused.progress);
+  assert.equal(hidden.restCountdown, paused.restCountdown);
+  assert.equal(hidden.graceText, paused.graceText);
+  await simulateVisibility(page, false);
+  assert.equal((await readState(page)).phase, "paused");
+  await mouseDown(page);
+  assert.equal((await readState(page)).restState, "neutral");
+  await page.clock.runFor(1000);
+  const heldResume = await readState(page);
+  assert.equal(heldResume.tension, paused.tension);
+  assert.equal(heldResume.progress, paused.progress);
+  assert.equal(heldResume.graceText, paused.graceText);
+  await page.mouse.up();
+  assert.match((await readState(page)).restCountdown, /0\.1秒/);
+  await page.clock.runFor(90);
+  assert.equal((await readState(page)).tension, 100);
+  assert.equal((await readState(page)).graceText, paused.graceText);
+  await page.clock.runFor(70);
+  assert.ok((await readState(page)).tension < 100);
+  assert.equal((await readState(page)).graceText, paused.graceText);
+  await mouseDown(page);
+  await page.clock.runFor(400);
+  assert.equal((await readState(page)).phase, "failure");
+  await page.mouse.up();
+  await assertEmpty(page);
+});
+
+for (const boundary of ["waiting", "recovering", "safe", "paused"]) {
+  test(`reset at ${boundary} recovery/danger boundary starts the next fight with a fresh budget`, async (t) => {
+    const page = await openGame(t);
+    await bankDanger(page);
+    if (boundary === "waiting" || boundary === "paused") await page.clock.runFor(200);
+    if (boundary === "recovering") await page.clock.runFor(350);
+    if (boundary === "safe") await advanceUntil(page, (state) => state.graceText === "", { maxMs: 2000, step: 20 });
+    if (boundary === "paused") await simulateVisibility(page, true);
+    await page.locator("#reset-button").focus();
+    await page.keyboard.press("Enter");
+    const reset = await readState(page);
+    assert.equal(reset.phase, "idle");
+    assert.equal(reset.restState, "inactive");
+    assert.equal(reset.restCountdown, "");
+    assert.equal(reset.graceText, "");
+    await assertEmpty(page);
+    if (boundary === "paused") await simulateVisibility(page, false);
+    await nextFish(page, 0.175);
+    await hook(page);
+    await mouseDown(page);
+    await page.clock.runFor(4420);
+    await page.mouse.up();
+    const fresh = await readState(page);
+    assert.equal(fresh.phase, "reeling");
+    assert.equal(fresh.tension, 100);
+    assert.match(fresh.graceText, /0\.8秒/);
+    assert.equal(fresh.restState, "waiting");
     await assertEmpty(page);
   });
 }
